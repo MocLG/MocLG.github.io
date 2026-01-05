@@ -269,11 +269,115 @@
             </div>
         </div>
 
-        <footer>
-            <p>© 2026 MocLG | Built for the Galaxy Note 20 Ultra</p>
-            <br>
-            <img src="https://github-readme-stats.vercel.app/api?username=MocLG&show_icons=true&theme=tokyonight&hide_border=true&bg_color=<img src="https://github-readme-stats-sigma-five.vercel.app/api?username=MocLG&show_icons=true&theme=tokyonight&hide_border=true&bg_color=00000000&hide_title=true" height="150">&hide_title=true" height="150">
-        </footer>
+        <div class="terminal-container" style="max-width: 850px; margin: 2rem auto; filter: drop-shadow(0 0 15px rgba(0,255,157,0.15));">
+    <div style="background: #161b22; padding: 10px 18px; border: 1px solid #00bcd4; border-radius: 12px 12px 0 0; display: flex; justify-content: space-between; align-items: center;">
+        <span style="color: #00bcd4; font-family: 'Courier New', monospace; font-size: 0.85rem; font-weight: bold;">moclg@note20ultra: ~ (zsh)</span>
+        <div style="display: flex; gap: 8px;">
+            <div style="width: 12px; height: 12px; background: #ff5f56; border-radius: 50%;"></div>
+            <div style="width: 12px; height: 12px; background: #ffbd2e; border-radius: 50%;"></div>
+            <div style="width: 12px; height: 12px; background: #27c93f; border-radius: 50%;"></div>
+        </div>
+    </div>
+    
+    <div id="terminal-body" style="background: #0d1117; height: 450px; padding: 25px; overflow-y: auto; font-family: 'Courier New', monospace; font-size: 0.95rem; border: 1px solid #00bcd4; border-top: none; border-radius: 0 0 12px 12px; color: #e6edf3; scroll-behavior: smooth;">
+        <div id="terminal-history">
+            <p style="color: #8b949e; margin-bottom: 10px;">Welcome to NetHunter terminal</p>
+            <p style="color: #8b949e; margin-bottom: 20px;">Type <span style="color: #00ff9d;">'help'</span> to explore the system.</p>
+        </div>
+        <div style="display: flex; align-items: center; margin-top: 10px;">
+            <span style="color: #00ff9d; margin-right: 12px; white-space: nowrap;">[MocLG@GitHub]></span>
+            <input type="text" id="terminal-input" autofocus autocomplete="off" style="background: transparent; border: none; color: #e6edf3; outline: none; width: 100%; font-family: inherit; font-size: inherit;">
+        </div>
+    </div>
+</div>
+
+<script>
+    const input = document.getElementById('terminal-input');
+    const history = document.getElementById('terminal-history');
+    const body = document.getElementById('terminal-body');
+
+    const commands = {
+        'help': () => `Available commands:<br>
+                       <span style="color: #00ff9d;">fastfetch</span> - Display system & developer info<br>
+                       <span style="color: #00ff9d;">ls</span>        - List project repositories<br>
+                       <span style="color: #00ff9d;">cat [file]</span> - View project technical specs<br>
+                       <span style="color: #00ff9d;">whoami</span>    - Learn about the developer<br>
+                       <span style="color: #00ff9d;">sudo</span>      - ???<br>
+                       <span style="color: #00ff9d;">clear</span>     - Wipe terminal history`,
+        
+        'fastfetch': () => `
+            <div style="display: flex; gap: 25px; margin-top: 10px; flex-wrap: wrap;">
+                <pre style="color: #00ff9d; font-weight: bold; line-height: 1.1; font-size: 1.2rem;">
+___  ___           _     _____ 
+|  \\/  |          | |   |  __ \\
+| .  . | ___   ___| |   | |  \\/
+| |\\/| |/ _ \\ / __| |   | | __ 
+| |  | | (_) | (__| |___| |_\\ \\
+\\_|  |_/\\___/ \\___\\_____/\\____/      
+                </pre>
+                <div style="line-height: 1.5;">
+                    <span style="color: #00ff9d; font-weight: bold;">USER:</span> MocLG<br>
+                    <span style="color: #00ff9d; font-weight: bold;">RANK:</span> S-Tier (Kernel Specialization)<br>
+                    <span style="color: #00ff9d; font-weight: bold;">PRIMARY:</span> android_kernel_samsung_exynos990<br>
+                    <span style="color: #00ff9d; font-weight: bold;">CONTRIB:</span> typecraft-dev/dotfiles (PR #34)<br>
+                    <span style="color: #00ff9d; font-weight: bold;">UPTIME:</span> 100% stable<br>
+                    <span style="color: #00ff9d; font-weight: bold;">SKILLS:</span> C, AArch64, HID, WireGuard, Lua<br>
+                    <span style="color: #00ff9d; font-weight: bold;">STATUS:</span> <span style="color: #27c93f;">Online & Compiling...</span>
+                </div>
+            </div>`,
+        
+        'ls': () => `<span style="color: #00bcd4;">exynos990_kernel</span>&nbsp;&nbsp;&nbsp;<span style="color: #00bcd4;">spaceship-game</span>&nbsp;&nbsp;&nbsp;<span style="color: #00bcd4;">ECommerce</span>&nbsp;&nbsp;&nbsp;<span style="color: #00bcd4;">dotfiles</span>`,
+        
+        'whoami': () => `MocLG: A systems-focused developer bridging the gap between Android hardware and security tools. Currently optimizing NetHunter for Exynos 990 devices and contributing to the open-source Linux ecosystem.`,
+        
+        'cat': (args) => {
+            const files = {
+                'exynos990_kernel': "Full Kali NetHunter support for N985F. Patched for HID, Injection, and WireGuard. Built with custom toolchain.",
+                'spaceship-game': "C++ based procedural generation engine. Orbital mechanics and optimized particle rendering via GLFW.",
+                'ECommerce': "Microservices architecture. Secure stripe integration and JWT authentication flow.",
+                'dotfiles': "Productivity-focused Arch Linux setup. Heavy Neovim/Lua customization for kernel debugging."
+            };
+            if (!args[0]) return "Usage: cat [filename]";
+            return files[args[0]] || `cat: ${args[0]}: File not found.`;
+        },
+
+        'sudo': () => `<span style="color: #ffbd2e;">[ROOT ACCESS GRANTED]</span><br>Magisk 29 detected. NetHunter module active. You have full control over the Exynos 990 stack.`,
+        
+        'clear': () => { history.innerHTML = ''; return null; }
+    };
+
+    input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            const fullInput = input.value.trim();
+            const [cmd, ...args] = fullInput.toLowerCase().split(' ');
+            
+            const line = document.createElement('div');
+            line.innerHTML = `<span style="color: #00ff9d; font-weight: bold;">[MocLG@GitHub]></span> <span style="color: #e6edf3;">${fullInput}</span>`;
+            history.appendChild(line);
+
+            if (commands[cmd]) {
+                const output = commands[cmd](args);
+                if (output) {
+                    const outLine = document.createElement('div');
+                    outLine.style.margin = "10px 0 20px 0";
+                    outLine.innerHTML = output;
+                    history.appendChild(outLine);
+                }
+            } else if (fullInput !== "") {
+                const error = document.createElement('div');
+                error.style.color = "#ff5f56";
+                error.style.margin = "5px 0 15px 0";
+                error.innerText = `sh: command not found: ${cmd}`;
+                history.appendChild(error);
+            }
+
+            input.value = '';
+            body.scrollTop = body.scrollHeight;
+        }
+    });
+
+    body.addEventListener('click', () => input.focus());
+</script>
     </div>
 
     <script>
