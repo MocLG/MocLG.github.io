@@ -298,12 +298,14 @@
 
     const commands = {
         'help': () => `Available commands:<br>
-                       <span style="color: #00ff9d;">fastfetch</span> - Display system & developer info<br>
-                       <span style="color: #00ff9d;">ls</span>        - List project repositories<br>
-                       <span style="color: #00ff9d;">cat [file]</span> - View project technical specs<br>
-                       <span style="color: #00ff9d;">whoami</span>    - Learn about the developer<br>
-                       <span style="color: #00ff9d;">sudo</span>      - ???<br>
-                       <span style="color: #00ff9d;">clear</span>     - Wipe terminal history`,
+                       <span style="color: #00ff9d;">fastfetch</span> - System & Dev info<br>
+                       <span style="color: #00ff9d;">ls</span>        - List repositories<br>
+                       <span style="color: #00ff9d;">cat [file]</span> - View technical specs<br>
+                       <span style="color: #00ff9d;">open [repo]</span>- Open GitHub repo in new tab<br>
+                       <span style="color: #00ff9d;">vim dotfiles</span>- View Neovim/Arch config<br>
+                       <span style="color: #00ff9d;">whoami</span>    - About MocLG<br>
+                       <span style="color: #00ff9d;">sudo</span>      - Check root status<br>
+                       <span style="color: #00ff9d;">clear</span>     - Wipe terminal`,
         
         'fastfetch': () => `
             <div style="display: flex; gap: 25px; margin-top: 10px; flex-wrap: wrap; align-items: center;">
@@ -328,8 +330,6 @@ ___  ___           _     _____
         
         'ls': () => `<span style="color: #00bcd4;">exynos990_kernel</span>&nbsp;&nbsp;&nbsp;<span style="color: #00bcd4;">spaceship-game</span>&nbsp;&nbsp;&nbsp;<span style="color: #00bcd4;">ecommerce</span>&nbsp;&nbsp;&nbsp;<span style="color: #00bcd4;">dotfiles</span>`,
         
-        'whoami': () => `MocLG: A systems-focused developer bridging the gap between Android hardware and security tools.`,
-        
         'cat': (args) => {
             const files = {
                 'exynos990_kernel': "Full Kali NetHunter support for N985F. Patched for HID, Injection, and WireGuard.",
@@ -342,27 +342,72 @@ ___  ___           _     _____
             return files[target] || `cat: ${args[0]}: File not found.`;
         },
 
+        'open': (args) => {
+            const repos = {
+                'exynos990_kernel': "https://github.com/MocLG/android_kernel_samsung_exynos990_nethunter",
+                'spaceship-game': "https://github.com/MocLG/spaceship-game-linux", 
+                'ecommerce': "https://github.com/MocLG/ECommerce",            
+                'dotfiles': "https://github.com/MocLG/dotfiles"              
+            };
+            if (!args[0]) return "Usage: open [repo_name]";
+            const target = args[0].toLowerCase();
+            if (repos[target]) {
+                window.open(repos[target], '_blank');
+                return `Opening ${target} on GitHub...`;
+            }
+            return `Error: Repo "${args[0]}" not found.`;
+        },
+
+        'vim': (args) => {
+            if (args[0] !== 'dotfiles') return "Usage: vim dotfiles";
+            return `<div style="background: #1a1b26; color: #a9b1d6; font-family: monospace; padding: 10px; border: 1px solid #414868; margin-top: 10px;">
+                <span style="color: #7aa2f7;">-- MocLG Neovim Kernel Config</span><br>
+                local nethunter = require('nethunter_tools')<br><br>
+                vim.opt.number = true<br>
+                vim.keymap.set('n', '&lt;leader&gt;mk', function()<br>
+                &nbsp;&nbsp;print("Compiling Exynos 990 Kernel...")<br>
+                end)<br>
+                <div style="background: #414868; color: #fff; margin-top: 10px;"> [init.lua] -- INSERT -- </div>
+            </div>`;
+        },
+
         'sudo': () => `<span style="color: #ffbd2e;">[ROOT ACCESS GRANTED]</span><br>Magisk 29 detected. NetHunter active.`,
-        
-        'clear': () => { historyContainer.innerHTML = ''; return null; }
+        'clear': () => { historyContainer.innerHTML = ''; return null; },
+        'whoami': () => {
+    return `
+        <div style="line-height: 1.6; border-left: 2px solid #00ff9d; padding-left: 15px; margin: 10px 0;">
+            <span style="color: #00ff9d; font-weight: bold;">USER:</span> MocLG<br>
+            <span style="color: #00ff9d; font-weight: bold;">ROLE:</span> Kernel Developer / Systems Enthusiast<br>
+            <span style="color: #00ff9d; font-weight: bold;">HOST:</span> Arch Linux (Workstation) / Android 13 (Mobile)<br>
+            <span style="color: #00ff9d; font-weight: bold;">BIO:</span> 15-year-old developer specializing in Exynos 990 kernel optimization and Kali NetHunter integration.<br>
+            <span style="color: #7aa2f7; font-style: italic; display: block; margin-top: 8px;">"Compiling the future, one patch at a time."</span>
+        </div>
+    `;
+},
     };
 
     let cmdHistory = [];
     let historyIdx = -1;
 
     input.addEventListener('keydown', (e) => {
-        // TAB AUTOCOMPLETE
+        // Tab Autocomplete
         if (e.key === 'Tab') {
             e.preventDefault();
             const val = input.value.trim().toLowerCase();
             const cmdList = Object.keys(commands);
+            const fileList = ['exynos990_kernel', 'spaceship-game', 'ecommerce', 'dotfiles'];
+            
             if (val && !val.includes(' ')) {
                 const match = cmdList.find(c => c.startsWith(val));
                 if (match) input.value = match;
+            } else if (val.startsWith('cat ') || val.startsWith('open ')) {
+                const parts = val.split(' ');
+                const match = fileList.find(f => f.startsWith(parts[1]));
+                if (match) input.value = `${parts[0]} ${match}`;
             }
         }
 
-        // ARROW UP
+        // History Navigation
         if (e.key === 'ArrowUp') {
             e.preventDefault();
             if (cmdHistory.length > 0 && historyIdx < cmdHistory.length - 1) {
@@ -370,8 +415,6 @@ ___  ___           _     _____
                 input.value = cmdHistory[cmdHistory.length - 1 - historyIdx];
             }
         }
-
-        // ARROW DOWN
         if (e.key === 'ArrowDown') {
             e.preventDefault();
             if (historyIdx > 0) {
@@ -383,12 +426,10 @@ ___  ___           _     _____
             }
         }
 
-        // ENTER
+        // Execution
         if (e.key === 'Enter') {
             const fullInput = input.value.trim();
-            const parts = fullInput.toLowerCase().split(' ');
-            const cmd = parts[0];
-            const args = parts.slice(1);
+            const [cmd, ...args] = fullInput.toLowerCase().split(' ');
             
             if (fullInput !== "") {
                 cmdHistory.push(fullInput);
@@ -396,7 +437,7 @@ ___  ___           _     _____
             }
             
             const line = document.createElement('div');
-            line.innerHTML = `<span style="color: #00ff9d; font-weight: bold;">[MocLG@GitHub]></span> <span style="color: #e6edf3;">${fullInput}</span>`;
+            line.innerHTML = `<span style="color: #00ff9d; font-weight: bold;">[MocLG@GitHub]></span> ${fullInput}`;
             historyContainer.appendChild(line);
 
             if (commands[cmd]) {
@@ -408,10 +449,10 @@ ___  ___           _     _____
                     historyContainer.appendChild(outLine);
                 }
             } else if (fullInput !== "") {
-                const error = document.createElement('div');
-                error.style.color = "#ff5f56";
-                error.innerText = `sh: command not found: ${cmd}`;
-                historyContainer.appendChild(error);
+                const err = document.createElement('div');
+                err.style.color = "#ff5f56";
+                err.innerText = `sh: command not found: ${cmd}`;
+                historyContainer.appendChild(err);
             }
 
             input.value = '';
