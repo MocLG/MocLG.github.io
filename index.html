@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MocLG | Kernel Engineer</title>
+    <style>
+        :root {
+            --bg: #050505;
+            --card-bg: rgba(22, 27, 34, 0.7);
+            --primary: #00ff9d; /* Kali/Hacker Green */
+            --secondary: #00bcd4; /* Cyan */
+            --text: #e6edf3;
+            --gray: #8b949e;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', monospace, sans-serif; }
+        
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            overflow-x: hidden;
+        }
+
+        /* Animated Background Canvas */
+        #canvas {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -1;
+            opacity: 0.4;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .glitch-text {
+            font-size: 4rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .typing-container {
+            font-size: 1.5rem;
+            color: var(--secondary);
+            font-family: 'Courier New', monospace;
+            display: flex;
+            align-items: center;
+        }
+        
+        .cursor {
+            width: 10px;
+            height: 25px;
+            background: var(--primary);
+            margin-left: 5px;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink { 50% { opacity: 0; } }
+
+        /* Stats Badge Row */
+        .stats-row {
+            margin-top: 2rem;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        /* Section Headers */
+        h2 {
+            font-size: 2.5rem;
+            margin: 4rem 0 2rem;
+            border-bottom: 2px solid var(--card-bg);
+            padding-bottom: 1rem;
+            display: inline-block;
+        }
+
+        /* 3D Cards Grid */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 2rem;
+            transition: transform 0.1s, box-shadow 0.3s;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+            transform-style: preserve-3d;
+        }
+
+        /* Specific Highlight for Kernel */
+        .card.kernel {
+            border: 1px solid var(--primary);
+            grid-column: 1 / -1; /* Spans full width */
+            background: linear-gradient(145deg, rgba(0, 255, 157, 0.05), rgba(22, 27, 34, 0.9));
+        }
+
+        .card:hover {
+            box-shadow: 0 0 30px rgba(0, 255, 157, 0.2);
+            transform: translateY(-5px);
+        }
+
+        .card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+
+        .card p {
+            color: var(--gray);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 5px 10px;
+            background: rgba(0, 255, 157, 0.1);
+            color: var(--primary);
+            border-radius: 5px;
+            font-size: 0.8rem;
+            margin-right: 5px;
+            margin-bottom: 5px;
+            font-family: monospace;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: 0.3s;
+            margin-top: 1rem;
+        }
+
+        .btn:hover {
+            background: var(--primary);
+            color: black;
+            box-shadow: 0 0 15px var(--primary);
+        }
+
+        /* Pulsing Status Dot */
+        .status-dot {
+            height: 10px;
+            width: 10px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+            box-shadow: 0 0 0 0 rgba(0, 255, 157, 1);
+            animation: pulse-green 2s infinite;
+        }
+
+        @keyframes pulse-green {
+            0% { box-shadow: 0 0 0 0 rgba(0, 255, 157, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(0, 255, 157, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 255, 157, 0); }
+        }
+
+        footer {
+            margin-top: 5rem;
+            text-align: center;
+            color: var(--gray);
+            padding: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="canvas"></canvas>
+
+    <div class="container">
+        <div class="hero">
+            <h1 class="glitch-text">MocLG</h1>
+            <div class="typing-container">
+                <span id="typing-text"></span><span class="cursor"></span>
+            </div>
+            
+            <div class="stats-row">
+                <img src="https://img.shields.io/github/followers/MocLG?style=for-the-badge&color=2ea44f&labelColor=101010" alt="Followers">
+                <img src="https://img.shields.io/github/stars/MocLG?style=for-the-badge&color=00bcd4&labelColor=101010" alt="Stars">
+            </div>
+        </div>
+
+        <h2><span class="status-dot"></span>Active Development</h2>
+        <div class="grid">
+            <div class="card kernel" id="tilt-card-main">
+                <h3>Samsung Exynos 990 NetHunter Kernel</h3>
+                <p>
+                    A highly customized kernel bringing full <strong>Kali NetHunter</strong> capabilities to the Samsung Galaxy Note 20 Ultra. 
+                    Includes support for <strong>WireGuard</strong>, <strong>HID Attacks</strong>, and <strong>WiFi Injection</strong>.
+                </p>
+                <div>
+                    <span class="tag">C</span>
+                    <span class="tag">Assembly</span>
+                    <span class="tag">NetHunter</span>
+                    <span class="tag">WireGuard</span>
+                </div>
+                <br>
+                <a href="https://github.com/MocLG/android_kernel_samsung_exynos990_nethunter" class="btn">View Source</a>
+                <a href="https://github.com/MocLG/android_kernel_samsung_exynos990_nethunter/releases" class="btn" style="border-color: var(--secondary); color: var(--secondary);">Download Zip</a>
+            </div>
+        </div>
+
+        <h2>Recent Projects</h2>
+        <div class="grid">
+            <div class="card" class="tilt-card">
+                <h3>🚀 Galactic Engine</h3>
+                <p>
+                    A C++/GLFW based 2D space shooting game featuring procedural generation, custom physics, and particle systems.
+                </p>
+                <span class="tag">C++</span>
+                <span class="tag">Game Dev</span>
+                <br>
+                <a href="https://github.com/MocLG/spaceship-game-windows" class="btn">View Windows Repo</a>
+                <a href="https://github.com/MocLG/spaceship-game-linux" class="btn">View Linux Repo</a>
+            </div>
+
+            <div class="card" class="tilt-card">
+                <h3>🛒 E-Commerce Suite</h3>
+                <p>
+                    A full-stack shopping architecture with secure payment gateways, user authentication, and admin dashboards.
+                </p>
+                <span class="tag">Python</span>
+                <span class="tag">Django</span>
+                <span class="tag">Stripe</span>
+                <br>
+                <a href="https://github.com/MocLG/ECommerce" class="btn">View Repo</a>
+            </div>
+            
+             <div class="card" class="tilt-card">
+                <h3>🔧 Linux Dotfiles</h3>
+                <p>
+                    Custom configuration for Arch Linux, Neovim, and ZSH. Optimized for kernel development workflow.
+                </p>
+                <span class="tag">Lua</span>
+                <span class="tag">Bash</span>
+                <br>
+                <a href="https://github.com/typecraft-dev/dotfiles" class="btn">View Contribution</a>
+            </div>
+        </div>
+
+        <footer>
+            <p>© 2026 MocLG | Built for the Galaxy Note 20 Ultra</p>
+            <br>
+            <img src="https://github-readme-stats.vercel.app/api?username=MocLG&show_icons=true&theme=tokyonight&hide_border=true&bg_color=00000000&hide_title=true" height="150">
+        </footer>
+    </div>
+
+    <script>
+        // 1. Typing Effect
+        const textToType = "System Engineer | Android Kernel Dev | Security Researcher";
+        const typingElement = document.getElementById("typing-text");
+        let i = 0;
+
+        function typeWriter() {
+            if (i < textToType.length) {
+                typingElement.innerHTML += textToType.charAt(i);
+                i++;
+                setTimeout(typeWriter, 50);
+            }
+        }
+        window.onload = typeWriter;
+
+        // 2. 3D Tilt Effect logic
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = ((y - centerY) / centerY) * -5; // Tilt intensity
+                const rotateY = ((x - centerX) / centerX) * 5;
+
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
+            });
+        });
+
+        // 3. Constellation Background (Canvas)
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const stars = [];
+        const numStars = 100;
+
+        for(let i = 0; i < numStars; i++) {
+            stars.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                vx: (Math.random() - 0.5) * 0.5,
+                vy: (Math.random() - 0.5) * 0.5
+            });
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#00ff9d';
+            ctx.strokeStyle = 'rgba(0, 255, 157, 0.1)';
+
+            stars.forEach((star, index) => {
+                star.x += star.vx;
+                star.y += star.vy;
+
+                if(star.x < 0 || star.x > canvas.width) star.vx *= -1;
+                if(star.y < 0 || star.y > canvas.height) star.vy *= -1;
+
+                ctx.beginPath();
+                ctx.arc(star.x, star.y, 2, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Draw lines to nearby stars
+                stars.forEach((star2, index2) => {
+                    if(index !== index2) {
+                        const dx = star.x - star2.x;
+                        const dy = star.y - star2.y;
+                        const dist = Math.sqrt(dx*dx + dy*dy);
+                        if(dist < 150) {
+                            ctx.beginPath();
+                            ctx.moveTo(star.x, star.y);
+                            ctx.lineTo(star2.x, star2.y);
+                            ctx.stroke();
+                        }
+                    }
+                });
+            });
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    </script>
+</body>
+</html>
