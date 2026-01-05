@@ -293,7 +293,7 @@
 
 <script>
     const input = document.getElementById('terminal-input');
-    const history = document.getElementById('terminal-history');
+    const historyContainer = document.getElementById('terminal-history');
     const body = document.getElementById('terminal-body');
 
     const commands = {
@@ -306,14 +306,14 @@
                        <span style="color: #00ff9d;">clear</span>     - Wipe terminal history`,
         
         'fastfetch': () => `
-            <div style="display: flex; gap: 25px; margin-top: 10px; flex-wrap: wrap;">
-                <pre style="color: #00ff9d; font-weight: bold; line-height: 1.1; font-size: 1.2rem;">
+            <div style="display: flex; gap: 25px; margin-top: 10px; flex-wrap: wrap; align-items: center;">
+                <pre style="color: #00ff9d; font-weight: bold; line-height: 1.1; font-size: 1.2rem; font-family: monospace; margin: 0;">
 ___  ___           _     _____ 
 |  \\/  |          | |   |  __ \\
 | .  . | ___   ___| |   | |  \\/
 | |\\/| |/ _ \\ / __| |   | | __ 
 | |  | | (_) | (__| |___| |_\\ \\
-\\_|  |_/\\___/ \\___\\_____/\\____/      
+\\_|  |_/\\___/ \\___\\_____/\\____/    
                 </pre>
                 <div style="line-height: 1.5;">
                     <span style="color: #00ff9d; font-weight: bold;">USER:</span> MocLG<br>
@@ -326,49 +326,92 @@ ___  ___           _     _____
                 </div>
             </div>`,
         
-        'ls': () => `<span style="color: #00bcd4;">exynos990_kernel</span>&nbsp;&nbsp;&nbsp;<span style="color: #00bcd4;">spaceship-game</span>&nbsp;&nbsp;&nbsp;<span style="color: #00bcd4;">ECommerce</span>&nbsp;&nbsp;&nbsp;<span style="color: #00bcd4;">dotfiles</span>`,
+        'ls': () => `<span style="color: #00bcd4;">exynos990_kernel</span>&nbsp;&nbsp;&nbsp;<span style="color: #00bcd4;">spaceship-game</span>&nbsp;&nbsp;&nbsp;<span style="color: #00bcd4;">ecommerce</span>&nbsp;&nbsp;&nbsp;<span style="color: #00bcd4;">dotfiles</span>`,
         
-        'whoami': () => `MocLG: A systems-focused developer bridging the gap between Android hardware and security tools. Currently optimizing NetHunter for Exynos 990 devices and contributing to the open-source Linux ecosystem.`,
+        'whoami': () => `MocLG: A systems-focused developer bridging the gap between Android hardware and security tools.`,
         
         'cat': (args) => {
             const files = {
-                'exynos990_kernel': "Full Kali NetHunter support for N985F. Patched for HID, Injection, and WireGuard. Built with custom toolchain.",
-                'spaceship-game': "C++ based procedural generation engine. Orbital mechanics and optimized particle rendering via GLFW.",
-                'ECommerce': "Microservices architecture. Secure stripe integration and JWT authentication flow.",
-                'dotfiles': "Productivity-focused Arch Linux setup. Heavy Neovim/Lua customization for kernel debugging."
+                'exynos990_kernel': "Full Kali NetHunter support for N985F. Patched for HID, Injection, and WireGuard.",
+                'spaceship-game': "C++ based procedural generation engine using GLFW.",
+                'ecommerce': "Microservices architecture with JWT authentication.",
+                'dotfiles': "Neovim/Lua customization for kernel debugging."
             };
             if (!args[0]) return "Usage: cat [filename]";
-            return files[args[0]] || `cat: ${args[0]}: File not found.`;
+            const target = args[0].toLowerCase();
+            return files[target] || `cat: ${args[0]}: File not found.`;
         },
 
-        'sudo': () => `<span style="color: #ffbd2e;">[ROOT ACCESS GRANTED]</span><br>Magisk 29 detected. NetHunter module active. You have full control over the Exynos 990 stack.`,
+        'sudo': () => `<span style="color: #ffbd2e;">[ROOT ACCESS GRANTED]</span><br>Magisk 29 detected. NetHunter active.`,
         
-        'clear': () => { history.innerHTML = ''; return null; }
+        'clear': () => { historyContainer.innerHTML = ''; return null; }
     };
 
+    let cmdHistory = [];
+    let historyIdx = -1;
+
     input.addEventListener('keydown', (e) => {
+        // TAB AUTOCOMPLETE
+        if (e.key === 'Tab') {
+            e.preventDefault();
+            const val = input.value.trim().toLowerCase();
+            const cmdList = Object.keys(commands);
+            if (val && !val.includes(' ')) {
+                const match = cmdList.find(c => c.startsWith(val));
+                if (match) input.value = match;
+            }
+        }
+
+        // ARROW UP
+        if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            if (cmdHistory.length > 0 && historyIdx < cmdHistory.length - 1) {
+                historyIdx++;
+                input.value = cmdHistory[cmdHistory.length - 1 - historyIdx];
+            }
+        }
+
+        // ARROW DOWN
+        if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            if (historyIdx > 0) {
+                historyIdx--;
+                input.value = cmdHistory[cmdHistory.length - 1 - historyIdx];
+            } else {
+                historyIdx = -1;
+                input.value = '';
+            }
+        }
+
+        // ENTER
         if (e.key === 'Enter') {
             const fullInput = input.value.trim();
-            const [cmd, ...args] = fullInput.toLowerCase().split(' ');
+            const parts = fullInput.toLowerCase().split(' ');
+            const cmd = parts[0];
+            const args = parts.slice(1);
+            
+            if (fullInput !== "") {
+                cmdHistory.push(fullInput);
+                historyIdx = -1;
+            }
             
             const line = document.createElement('div');
             line.innerHTML = `<span style="color: #00ff9d; font-weight: bold;">[MocLG@GitHub]></span> <span style="color: #e6edf3;">${fullInput}</span>`;
-            history.appendChild(line);
+            historyContainer.appendChild(line);
 
             if (commands[cmd]) {
                 const output = commands[cmd](args);
                 if (output) {
                     const outLine = document.createElement('div');
-                    outLine.style.margin = "10px 0 20px 0";
+                    outLine.style.margin = "5px 0 15px 0";
                     outLine.innerHTML = output;
-                    history.appendChild(outLine);
+                    historyContainer.appendChild(outLine);
                 }
             } else if (fullInput !== "") {
                 const error = document.createElement('div');
                 error.style.color = "#ff5f56";
-                error.style.margin = "5px 0 15px 0";
                 error.innerText = `sh: command not found: ${cmd}`;
-                history.appendChild(error);
+                historyContainer.appendChild(error);
             }
 
             input.value = '';
