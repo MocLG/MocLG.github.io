@@ -195,6 +195,12 @@
     </style>
 </head>
 <body>
+    <script>
+        // Ensure visitors start at the top of the page
+        window.addEventListener('load', () => {
+            window.scrollTo(0, 0);
+        });
+    </script>
 
     <canvas id="canvas"></canvas>
 
@@ -243,44 +249,6 @@
                 </div>
                 <br>
                 <a href="https://github.com/MocLG/rtw88-rtl8723bs" class="btn">View Source</a>
-            </div>
-        </div>
-
-        <h2>Recent Projects</h2>
-        <div class="grid">
-            <div class="card" class="tilt-card">
-                <h3>🚀 Galactic Engine</h3>
-                <p>
-                    A C++/GLFW based 2D space shooting game featuring procedural generation, custom physics, and particle systems.
-                </p>
-                <span class="tag">C++</span>
-                <span class="tag">Game Dev</span>
-                <br>
-                <a href="https://github.com/MocLG/spaceship-game-windows" class="btn">View Windows Repo</a>
-                <a href="https://github.com/MocLG/spaceship-game-linux" class="btn">View Linux Repo</a>
-            </div>
-
-            <div class="card" class="tilt-card">
-                <h3>🛒 E-Commerce Suite</h3>
-                <p>
-                    A full-stack shopping architecture with secure payment gateways, user authentication, and admin dashboards.
-                </p>
-                <span class="tag">Python</span>
-                <span class="tag">Django</span>
-                <span class="tag">Stripe</span>
-                <br>
-                <a href="https://github.com/MocLG/ECommerce" class="btn">View Repo</a>
-            </div>
-            
-             <div class="card" class="tilt-card">
-                <h3>🔧 Linux Dotfiles</h3>
-                <p>
-                    Custom configuration for Arch Linux, Neovim, and ZSH. Optimized for kernel development workflow.
-                </p>
-                <span class="tag">Lua</span>
-                <span class="tag">Bash</span>
-                <br>
-                <a href="https://github.com/typecraft-dev/dotfiles" class="btn">View Contribution</a>
             </div>
         </div>
 
@@ -479,7 +447,44 @@ ___  ___           _     _____
 
     body.addEventListener('click', () => input.focus());
 </script>
-    </div>
+
+        <h2>Recent Projects</h2>
+        <div class="grid">
+            <div class="card" class="tilt-card">
+                <h3>🚀 Galactic Engine</h3>
+                <p>
+                    A C++/GLFW based 2D space shooting game featuring procedural generation, custom physics, and particle systems.
+                </p>
+                <span class="tag">C++</span>
+                <span class="tag">Game Dev</span>
+                <br>
+                <a href="https://github.com/MocLG/spaceship-game-windows" class="btn">View Windows Repo</a>
+                <a href="https://github.com/MocLG/spaceship-game-linux" class="btn">View Linux Repo</a>
+            </div>
+
+            <div class="card" class="tilt-card">
+                <h3>🛒 E-Commerce Suite</h3>
+                <p>
+                    A full-stack shopping architecture with secure payment gateways, user authentication, and admin dashboards.
+                </p>
+                <span class="tag">Python</span>
+                <span class="tag">Django</span>
+                <span class="tag">Stripe</span>
+                <br>
+                <a href="https://github.com/MocLG/ECommerce" class="btn">View Repo</a>
+            </div>
+            
+             <div class="card" class="tilt-card">
+                <h3>🔧 Linux Dotfiles</h3>
+                <p>
+                    Custom configuration for Arch Linux, Neovim, and ZSH. Optimized for kernel development workflow.
+                </p>
+                <span class="tag">Lua</span>
+                <span class="tag">Bash</span>
+                <br>
+                <a href="https://github.com/typecraft-dev/dotfiles" class="btn">View Contribution</a>
+            </div>
+        </div>
 
     <script>
         // 1. Typing Effect
