@@ -229,6 +229,21 @@
                 <a href="https://github.com/MocLG/android_kernel_samsung_exynos990_nethunter" class="btn">View Source</a>
                 <a href="https://github.com/MocLG/android_kernel_samsung_exynos990_nethunter/releases" class="btn" style="border-color: var(--secondary); color: var(--secondary);">Download Zip</a>
             </div>
+
+            <div class="card kernel" id="tilt-card-rtw88">
+                <h3>RTW88 RTL8723BS WiFi Driver</h3>
+                <p>
+                    A modern mac80211-based port of the RTL8723BS driver for the rtw88 framework, replacing the legacy staging driver.
+                </p>
+                <div>
+                    <span class="tag">C</span>
+                    <span class="tag">Linux Kernel</span>
+                    <span class="tag">WiFi</span>
+                    <span class="tag">RTL8723BS</span>
+                </div>
+                <br>
+                <a href="https://github.com/MocLG/rtw88-rtl8723bs" class="btn">View Source</a>
+            </div>
         </div>
 
         <h2>Recent Projects</h2>
@@ -328,11 +343,12 @@ ___  ___           _     _____
                 </div>
             </div>`,
         
-        'ls': () => `<span style="color: #00bcd4;">exynos990_kernel</span>&nbsp;&nbsp;&nbsp;<span style="color: #00bcd4;">spaceship-game</span>&nbsp;&nbsp;&nbsp;<span style="color: #00bcd4;">ecommerce</span>&nbsp;&nbsp;&nbsp;<span style="color: #00bcd4;">dotfiles</span>`,
+        'ls': () => `<span style="color: #00bcd4;">exynos990_kernel</span>&nbsp;&nbsp;&nbsp;<span style="color: #00bcd4;">rtl8723bs-main</span>&nbsp;&nbsp;&nbsp;<span style="color: #00bcd4;">spaceship-game</span>&nbsp;&nbsp;&nbsp;<span style="color: #00bcd4;">ecommerce</span>&nbsp;&nbsp;&nbsp;<span style="color: #00bcd4;">dotfiles</span>`,
         
         'cat': (args) => {
             const files = {
                 'exynos990_kernel': "Full Kali NetHunter support for N985F. Patched for HID, Injection, and WireGuard.",
+                'rtl8723bs-main': "A modern mac80211-based port of the RTL8723BS driver for the rtw88 framework, replacing the legacy staging driver.",
                 'spaceship-game': "C++ based procedural generation engine using GLFW.",
                 'ecommerce': "Microservices architecture with JWT authentication.",
                 'dotfiles': "Neovim/Lua customization for kernel debugging."
@@ -345,6 +361,7 @@ ___  ___           _     _____
         'open': (args) => {
             const repos = {
                 'exynos990_kernel': "https://github.com/MocLG/android_kernel_samsung_exynos990_nethunter",
+                'rtl8723bs-main': "https://github.com/MocLG/rtw88-rtl8723bs",
                 'spaceship-game': "https://github.com/MocLG/spaceship-game-linux", 
                 'ecommerce': "https://github.com/MocLG/ECommerce",            
                 'dotfiles': "https://github.com/MocLG/dotfiles"              
@@ -395,7 +412,7 @@ ___  ___           _     _____
             e.preventDefault();
             const val = input.value.trim().toLowerCase();
             const cmdList = Object.keys(commands);
-            const fileList = ['exynos990_kernel', 'spaceship-game', 'ecommerce', 'dotfiles'];
+            const fileList = ['exynos990_kernel', 'rtl8723bs-main', 'spaceship-game', 'ecommerce', 'dotfiles'];
             
             if (val && !val.includes(' ')) {
                 const match = cmdList.find(c => c.startsWith(val));
