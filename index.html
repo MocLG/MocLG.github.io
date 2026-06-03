@@ -7,603 +7,1206 @@
     <style>
         :root {
             --bg: #050505;
-            --card-bg: rgba(22, 27, 34, 0.7);
-            --primary: #00ff9d; /* Kali/Hacker Green */
-            --secondary: #00bcd4; /* Cyan */
+            --card-bg: rgba(22, 27, 34, 0.78);
+            --primary: #00ff9d;
+            --secondary: #00bcd4;
+            --accent: #f4d35e;
             --text: #e6edf3;
             --gray: #8b949e;
+            --border: rgba(255, 255, 255, 0.1);
+            --terminal: #0d1117;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', monospace, sans-serif; }
-        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         body {
-            background-color: var(--bg);
+            background: var(--bg);
             color: var(--text);
+            font-family: "Segoe UI", monospace, sans-serif;
             overflow-x: hidden;
         }
 
-        /* Animated Background Canvas */
         #canvas {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: -1;
+            height: 100%;
+            left: 0;
             opacity: 0.4;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: -1;
         }
 
         .container {
-            max-width: 1100px;
             margin: 0 auto;
+            max-width: 1120px;
             padding: 2rem;
             position: relative;
             z-index: 1;
         }
 
-        /* Hero Section */
         .hero {
-            height: 80vh;
+            align-items: flex-start;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            align-items: flex-start;
+            min-height: 78vh;
+            padding-bottom: 3rem;
         }
 
         .glitch-text {
-            font-size: 4rem;
-            font-weight: 800;
-            text-transform: uppercase;
             background: linear-gradient(90deg, var(--primary), var(--secondary));
             -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+            font-size: clamp(2.4rem, 9vw, 4rem);
+            font-weight: 800;
+            letter-spacing: 0;
             margin-bottom: 1rem;
+            overflow-wrap: anywhere;
+            text-transform: uppercase;
         }
 
         .typing-container {
-            font-size: 1.5rem;
-            color: var(--secondary);
-            font-family: 'Courier New', monospace;
-            display: flex;
             align-items: center;
-        }
-        
-        .cursor {
-            width: 10px;
-            height: 25px;
-            background: var(--primary);
-            margin-left: 5px;
-            animation: blink 1s infinite;
-        }
-
-        @keyframes blink { 50% { opacity: 0; } }
-
-        /* Stats Badge Row */
-        .stats-row {
-            margin-top: 2rem;
+            color: var(--secondary);
             display: flex;
-            gap: 1rem;
+            font-family: "Courier New", monospace;
+            font-size: clamp(1.05rem, 4vw, 1.5rem);
+            line-height: 1.45;
+            min-height: 2.5rem;
+        }
+
+        .cursor {
+            animation: blink 1s infinite;
+            background: var(--primary);
+            height: 25px;
+            margin-left: 5px;
+            width: 10px;
+        }
+
+        @keyframes blink {
+            50% {
+                opacity: 0;
+            }
+        }
+
+        .stats-row {
+            display: flex;
             flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 2rem;
         }
 
-        /* Section Headers */
+        .contact-section {
+            margin-top: -1rem;
+        }
+
+        .contact-grid {
+            display: grid;
+            gap: 1rem;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        }
+
+        .contact-link {
+            background: rgba(22, 27, 34, 0.78);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            display: block;
+            padding: 1.25rem;
+            text-decoration: none;
+            transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s;
+        }
+
+        .contact-link:hover {
+            border-color: var(--primary);
+            box-shadow: 0 0 22px rgba(0, 255, 157, 0.16);
+            transform: translateY(-2px);
+        }
+
+        .contact-label {
+            color: var(--accent);
+            display: block;
+            font-family: "Courier New", monospace;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        .contact-email {
+            color: var(--primary);
+            display: block;
+            font-family: "Courier New", monospace;
+            font-size: clamp(1rem, 3vw, 1.1rem);
+            overflow-wrap: anywhere;
+        }
+
         h2 {
-            font-size: 2.5rem;
-            margin: 4rem 0 2rem;
             border-bottom: 2px solid var(--card-bg);
-            padding-bottom: 1rem;
             display: inline-block;
+            font-size: clamp(1.9rem, 5vw, 2.5rem);
+            letter-spacing: 0;
+            margin: 4rem 0 2rem;
+            padding-bottom: 1rem;
         }
 
-        /* 3D Cards Grid */
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
+            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
         }
 
         .card {
             background: var(--card-bg);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 15px;
-            padding: 2rem;
-            transition: transform 0.1s, box-shadow 0.3s;
-            backdrop-filter: blur(10px);
-            position: relative;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            min-height: 100%;
             overflow: hidden;
+            padding: 1.5rem;
+            position: relative;
             transform-style: preserve-3d;
+            transition: box-shadow 0.3s, transform 0.1s;
+            backdrop-filter: blur(10px);
         }
 
-        /* Specific Highlight for Kernel */
         .card.kernel {
-            border: 1px solid var(--primary);
-            grid-column: 1 / -1; /* Spans full width */
-            background: linear-gradient(145deg, rgba(0, 255, 157, 0.05), rgba(22, 27, 34, 0.9));
+            background: linear-gradient(145deg, rgba(0, 255, 157, 0.06), rgba(22, 27, 34, 0.92));
+            border-color: rgba(0, 255, 157, 0.65);
+            grid-column: 1 / -1;
+        }
+
+        .card.project-primary {
+            border-color: rgba(0, 255, 157, 0.65);
         }
 
         .card:hover {
             box-shadow: 0 0 30px rgba(0, 255, 157, 0.2);
-            transform: translateY(-5px);
+        }
+
+        .card-topline {
+            color: var(--accent);
+            font-family: "Courier New", monospace;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0;
+            margin-bottom: 0.7rem;
+            text-transform: uppercase;
         }
 
         .card h3 {
-            font-size: 1.8rem;
-            margin-bottom: 0.5rem;
             color: var(--primary);
+            font-size: clamp(1.35rem, 4vw, 1.8rem);
+            letter-spacing: 0;
+            line-height: 1.2;
+            margin-bottom: 0.7rem;
+            overflow-wrap: anywhere;
         }
 
         .card p {
             color: var(--gray);
             line-height: 1.6;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .card-meta {
+            color: var(--gray);
+            display: flex;
+            flex-wrap: wrap;
+            font-family: "Courier New", monospace;
+            font-size: 0.82rem;
+            gap: 0.45rem 0.8rem;
+            margin: 0 0 1rem;
+        }
+
+        .tag-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.35rem;
+            margin-top: auto;
         }
 
         .tag {
-            display: inline-block;
-            padding: 5px 10px;
             background: rgba(0, 255, 157, 0.1);
-            color: var(--primary);
             border-radius: 5px;
-            font-size: 0.8rem;
-            margin-right: 5px;
-            margin-bottom: 5px;
+            color: var(--primary);
+            display: inline-block;
             font-family: monospace;
+            font-size: 0.8rem;
+            padding: 5px 10px;
+        }
+
+        .card-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.7rem;
+            margin-top: 1rem;
         }
 
         .btn {
-            display: inline-block;
-            padding: 10px 20px;
             background: transparent;
             border: 1px solid var(--primary);
-            color: var(--primary);
-            text-decoration: none;
             border-radius: 5px;
-            font-weight: bold;
+            color: var(--primary);
+            display: inline-block;
+            font-weight: 700;
+            padding: 10px 16px;
+            text-decoration: none;
             transition: 0.3s;
-            margin-top: 1rem;
         }
 
         .btn:hover {
             background: var(--primary);
-            color: black;
             box-shadow: 0 0 15px var(--primary);
+            color: #000;
         }
 
-        /* Pulsing Status Dot */
+        .btn.secondary {
+            border-color: var(--secondary);
+            color: var(--secondary);
+        }
+
+        .btn.secondary:hover {
+            background: var(--secondary);
+            box-shadow: 0 0 15px var(--secondary);
+            color: #000;
+        }
+
         .status-dot {
-            height: 10px;
-            width: 10px;
+            animation: pulse-green 2s infinite;
             background-color: var(--primary);
             border-radius: 50%;
-            display: inline-block;
-            margin-right: 8px;
             box-shadow: 0 0 0 0 rgba(0, 255, 157, 1);
-            animation: pulse-green 2s infinite;
+            display: inline-block;
+            height: 10px;
+            margin-right: 8px;
+            width: 10px;
         }
 
         @keyframes pulse-green {
-            0% { box-shadow: 0 0 0 0 rgba(0, 255, 157, 0.7); }
-            70% { box-shadow: 0 0 0 10px rgba(0, 255, 157, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(0, 255, 157, 0); }
+            0% {
+                box-shadow: 0 0 0 0 rgba(0, 255, 157, 0.7);
+            }
+
+            70% {
+                box-shadow: 0 0 0 10px rgba(0, 255, 157, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(0, 255, 157, 0);
+            }
+        }
+
+        .terminal-container {
+            filter: drop-shadow(0 0 15px rgba(0, 255, 157, 0.15));
+            margin: 3rem auto 1rem;
+            max-width: 880px;
+        }
+
+        .terminal-header {
+            align-items: center;
+            background: #161b22;
+            border: 1px solid var(--secondary);
+            border-radius: 8px 8px 0 0;
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 18px;
+        }
+
+        .terminal-title {
+            color: var(--secondary);
+            font-family: "Courier New", monospace;
+            font-size: 0.85rem;
+            font-weight: 700;
+            overflow-wrap: anywhere;
+        }
+
+        .terminal-controls {
+            display: flex;
+            flex-shrink: 0;
+            gap: 8px;
+            margin-left: 12px;
+        }
+
+        .terminal-control {
+            border-radius: 50%;
+            height: 12px;
+            width: 12px;
+        }
+
+        .terminal-body {
+            background: var(--terminal);
+            border: 1px solid var(--secondary);
+            border-radius: 0 0 8px 8px;
+            border-top: none;
+            color: var(--text);
+            font-family: "Courier New", monospace;
+            font-size: 0.95rem;
+            height: min(460px, 72vh);
+            overflow-y: auto;
+            padding: 22px;
+            scroll-behavior: smooth;
+        }
+
+        #terminal-history > div,
+        #terminal-history > p {
+            overflow-wrap: anywhere;
+        }
+
+        .terminal-input-line {
+            align-items: center;
+            display: flex;
+            margin-top: 10px;
+        }
+
+        .prompt {
+            color: var(--primary);
+            font-weight: 700;
+            margin-right: 12px;
+            white-space: nowrap;
+        }
+
+        #terminal-input {
+            background: transparent;
+            border: none;
+            color: var(--text);
+            font-family: inherit;
+            font-size: inherit;
+            outline: none;
+            width: 100%;
+        }
+
+        .repo-list {
+            display: grid;
+            gap: 0.35rem 1rem;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            margin-top: 0.5rem;
+        }
+
+        .repo-list span {
+            color: var(--secondary);
+            overflow-wrap: anywhere;
+        }
+
+        .terminal-card {
+            border-left: 2px solid var(--primary);
+            line-height: 1.6;
+            margin: 10px 0;
+            padding-left: 15px;
+        }
+
+        .terminal-label {
+            color: var(--primary);
+            font-weight: 700;
         }
 
         footer {
-            margin-top: 5rem;
-            text-align: center;
+            border-top: 1px solid var(--border);
             color: var(--gray);
+            margin-top: 5rem;
             padding: 2rem;
-            border-top: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                padding: 1.25rem;
+            }
+
+            .hero {
+                min-height: 70vh;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .card {
+                padding: 1.2rem;
+            }
+
+            .terminal-header,
+            .terminal-body {
+                padding-left: 14px;
+                padding-right: 14px;
+            }
+
+            .terminal-input-line {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 0.35rem;
+            }
         }
     </style>
     <script type="application/ld+json">
     {
-    "@context": "https://schema.org",
-    "@type": "Person",
-    "name": "Luka Gejak",
-    "additionalName": "MocLG",
-    "url": "https://moclg.me",
-    "jobTitle": "Linux Systems Programmer & Kernel Developer",
-    "knowsAbout": [
-      "Linux kernel development",
-      "Wireless networking drivers",
-      "rtw88 subsystem",
-      "mac80211",
-      "Android kernel development",
-      "Judo"
-    ],
-    "sameAs": [
-      "https://github.com/MocLG",
-      "https://moclg.github.io",
-      "https://github.com/MocLG/rtw88-rtl8723bs",
-      "https://github.com/MocLG/android_kernel_samsung_exynos990_nethunter",
-      "https://lore.kernel.org/all/?q=luka.gejak%40linux.dev"
-    ]
-  }
-  </script>
-
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Luka Gejak",
+        "additionalName": "MocLG",
+        "url": "https://moclg.me",
+        "jobTitle": "Linux Systems Programmer & Kernel Developer",
+        "knowsAbout": [
+            "Linux kernel development",
+            "Wireless networking drivers",
+            "rtw88 subsystem",
+            "mac80211",
+            "Android kernel development",
+            "Systems programming"
+        ],
+        "sameAs": [
+            "https://github.com/MocLG",
+            "https://moclg.github.io",
+            "https://github.com/MocLG/rtw88-rtl8723bs",
+            "https://github.com/MocLG/android_kernel_samsung_exynos990_nethunter",
+            "https://github.com/MocLG/Orbital",
+            "https://lore.kernel.org/all/?q=luka.gejak%40linux.dev"
+        ]
+    }
+    </script>
 </head>
 <body>
-    <script>
-        // Ensure visitors start at the top of the page
-        window.addEventListener('load', () => {
-            window.scrollTo(0, 0);
-        });
-    </script>
-
     <canvas id="canvas"></canvas>
 
     <div class="container">
-        <div class="hero">
+        <section class="hero">
             <h1 class="glitch-text">MocLG - Luka Gejak</h1>
             <div class="typing-container">
                 <span id="typing-text"></span><span class="cursor"></span>
             </div>
-            
+
             <div class="stats-row">
                 <img src="https://img.shields.io/github/followers/MocLG?style=for-the-badge&color=2ea44f&labelColor=101010" alt="Followers">
                 <img src="https://img.shields.io/github/stars/MocLG?style=for-the-badge&color=00bcd4&labelColor=101010" alt="Stars">
             </div>
-        </div>
+        </section>
+
+        <section class="contact-section" aria-labelledby="contact-heading">
+            <h2 id="contact-heading">Contact Me</h2>
+            <div class="contact-grid">
+                <a class="contact-link" href="mailto:luka.gejak@linux.dev">
+                    <span class="contact-label">Kernel related topics</span>
+                    <span class="contact-email">luka.gejak@linux.dev</span>
+                </a>
+                <a class="contact-link" href="mailto:lukagejak5@gmail.com">
+                    <span class="contact-label">Other or random topics</span>
+                    <span class="contact-email">lukagejak5@gmail.com</span>
+                </a>
+            </div>
+        </section>
 
         <h2><span class="status-dot"></span>Active Development</h2>
         <div class="grid">
-            <div class="card kernel" id="tilt-card-main">
-                <h3>Samsung Exynos 990 NetHunter Kernel</h3>
-                <p>
-                    A highly customized kernel bringing full <strong>Kali NetHunter</strong> capabilities to the Samsung Galaxy Note 20 Ultra. 
-                    Includes support for <strong>WireGuard</strong>, <strong>HID Attacks</strong>, and <strong>WiFi Injection</strong>.
-                </p>
-                <div>
-                    <span class="tag">C</span>
-                    <span class="tag">Assembly</span>
-                    <span class="tag">NetHunter</span>
-                    <span class="tag">WireGuard</span>
-                </div>
-                <br>
-                <a href="https://github.com/MocLG/android_kernel_samsung_exynos990_nethunter" class="btn">View Source</a>
-                <a href="https://github.com/MocLG/android_kernel_samsung_exynos990_nethunter/releases" class="btn" style="border-color: var(--secondary); color: var(--secondary);">Download Zip</a>
-            </div>
-
-            <div class="card kernel" id="tilt-card-rtw88">
-                <h3>RTW88 RTL8723BS WiFi Driver</h3>
+            <article class="card kernel">
+                <div class="card-topline">Primary Project</div>
+                <h3>rtw88-rtl8723bs</h3>
                 <p>
                     A modern mac80211-based port of the RTL8723BS driver for the rtw88 framework, replacing the legacy staging driver.
                 </p>
-                <div>
+                <div class="card-meta">
+                    <span>C</span>
+                    <span>5 stars</span>
+                    <span>1 fork</span>
+                </div>
+                <div class="tag-row">
                     <span class="tag">C</span>
                     <span class="tag">Linux Kernel</span>
-                    <span class="tag">WiFi</span>
+                    <span class="tag">mac80211</span>
+                    <span class="tag">rtw88</span>
                     <span class="tag">RTL8723BS</span>
                 </div>
-                <br>
-                <a href="https://github.com/MocLG/rtw88-rtl8723bs" class="btn">View Source</a>
-            </div>
-        </div>
-
-        <div class="terminal-container" style="max-width: 850px; margin: 2rem auto; filter: drop-shadow(0 0 15px rgba(0,255,157,0.15));">
-    <div style="background: #161b22; padding: 10px 18px; border: 1px solid #00bcd4; border-radius: 12px 12px 0 0; display: flex; justify-content: space-between; align-items: center;">
-        <span style="color: #00bcd4; font-family: 'Courier New', monospace; font-size: 0.85rem; font-weight: bold;">moclg@note20ultra: ~ (zsh)</span>
-        <div style="display: flex; gap: 8px;">
-            <div style="width: 12px; height: 12px; background: #ff5f56; border-radius: 50%;"></div>
-            <div style="width: 12px; height: 12px; background: #ffbd2e; border-radius: 50%;"></div>
-            <div style="width: 12px; height: 12px; background: #27c93f; border-radius: 50%;"></div>
-        </div>
-    </div>
-    
-    <div id="terminal-body" style="background: #0d1117; height: 450px; padding: 25px; overflow-y: auto; font-family: 'Courier New', monospace; font-size: 0.95rem; border: 1px solid #00bcd4; border-top: none; border-radius: 0 0 12px 12px; color: #e6edf3; scroll-behavior: smooth;">
-        <div id="terminal-history">
-            <p style="color: #8b949e; margin-bottom: 10px;">Welcome to NetHunter terminal</p>
-            <p style="color: #8b949e; margin-bottom: 20px;">Type <span style="color: #00ff9d;">'help'</span> to explore the system.</p>
-        </div>
-        <div style="display: flex; align-items: center; margin-top: 10px;">
-            <span style="color: #00ff9d; margin-right: 12px; white-space: nowrap;">[MocLG@GitHub]></span>
-            <input type="text" id="terminal-input" autofocus autocomplete="off" style="background: transparent; border: none; color: #e6edf3; outline: none; width: 100%; font-family: inherit; font-size: inherit;">
-        </div>
-    </div>
-</div>
-
-<script>
-    const input = document.getElementById('terminal-input');
-    const historyContainer = document.getElementById('terminal-history');
-    const body = document.getElementById('terminal-body');
-
-    const commands = {
-        'help': () => `Available commands:<br>
-                       <span style="color: #00ff9d;">fastfetch</span> - System & Dev info<br>
-                       <span style="color: #00ff9d;">ls</span>        - List repositories<br>
-                       <span style="color: #00ff9d;">cat [file]</span> - View technical specs<br>
-                       <span style="color: #00ff9d;">open [repo]</span>- Open GitHub repo in new tab<br>
-                       <span style="color: #00ff9d;">vim dotfiles</span>- View Neovim/Arch config<br>
-                       <span style="color: #00ff9d;">whoami</span>    - About MocLG<br>
-                       <span style="color: #00ff9d;">sudo</span>      - Check root status<br>
-                       <span style="color: #00ff9d;">clear</span>     - Wipe terminal`,
-        
-        'fastfetch': () => `
-            <div style="display: flex; gap: 25px; margin-top: 10px; flex-wrap: wrap; align-items: center;">
-                <pre style="color: #00ff9d; font-weight: bold; line-height: 1.1; font-size: 1.2rem; font-family: monospace; margin: 0;">
-___  ___           _     _____ 
-|  \\/  |          | |   |  __ \\
-| .  . | ___   ___| |   | |  \\/
-| |\\/| |/ _ \\ / __| |   | | __ 
-| |  | | (_) | (__| |___| |_\\ \\
-\\_|  |_/\\___/ \\___\\_____/\\____/    
-                </pre>
-                <div style="line-height: 1.5;">
-                    <span style="color: #00ff9d; font-weight: bold;">USER:</span> MocLG<br>
-                    <span style="color: #00ff9d; font-weight: bold;">RANK:</span> S-Tier (Kernel Specialization)<br>
-                    <span style="color: #00ff9d; font-weight: bold;">PRIMARY:</span> android_kernel_samsung_exynos990<br>
-                    <span style="color: #00ff9d; font-weight: bold;">CONTRIB:</span> Contributions to linux kernel<br>
-                    <span style="color: #00ff9d; font-weight: bold;">UPTIME:</span> 100% stable<br>
-                    <span style="color: #00ff9d; font-weight: bold;">SKILLS:</span> C, AArch64, HID, WireGuard, Lua<br>
-                    <span style="color: #00ff9d; font-weight: bold;">STATUS:</span> <span style="color: #27c93f;">Online & Compiling...</span>
+                <div class="card-actions">
+                    <a href="https://github.com/MocLG/rtw88-rtl8723bs" class="btn">View Source</a>
                 </div>
-            </div>`,
-        
-        'ls': () => `<span style="color: #00bcd4;">exynos990_kernel</span>&nbsp;&nbsp;&nbsp;<span style="color: #00bcd4;">rtl8723bs-main</span>&nbsp;&nbsp;&nbsp;<span style="color: #00bcd4;">spaceship-game</span>&nbsp;&nbsp;&nbsp;<span style="color: #00bcd4;">ecommerce</span>&nbsp;&nbsp;&nbsp;<span style="color: #00bcd4;">dotfiles</span>`,
-        
-        'cat': (args) => {
-            const files = {
-                'exynos990_kernel': "Full Kali NetHunter support for N985F. Patched for HID, Injection, and WireGuard.",
-                'rtl8723bs-main': "A modern mac80211-based port of the RTL8723BS driver for the rtw88 framework, replacing the legacy staging driver.",
-                'spaceship-game': "C++ based procedural generation engine using GLFW.",
-                'ecommerce': "Microservices architecture with JWT authentication.",
-                'dotfiles': "Neovim/Lua customization for kernel debugging."
-            };
-            if (!args[0]) return "Usage: cat [filename]";
-            const target = args[0].toLowerCase();
-            return files[target] || `cat: ${args[0]}: File not found.`;
-        },
+            </article>
 
-        'open': (args) => {
-            const repos = {
-                'exynos990_kernel': "https://github.com/MocLG/android_kernel_samsung_exynos990_nethunter",
-                'rtl8723bs-main': "https://github.com/MocLG/rtw88-rtl8723bs",
-                'spaceship-game': "https://github.com/MocLG/spaceship-game-linux", 
-                'ecommerce': "https://github.com/MocLG/ECommerce",            
-                'dotfiles': "https://github.com/MocLG/dotfiles"              
-            };
-            if (!args[0]) return "Usage: open [repo_name]";
-            const target = args[0].toLowerCase();
-            if (repos[target]) {
-                window.open(repos[target], '_blank');
-                return `Opening ${target} on GitHub...`;
-            }
-            return `Error: Repo "${args[0]}" not found.`;
-        },
-
-        'vim': (args) => {
-            if (args[0] !== 'dotfiles') return "Usage: vim dotfiles";
-            return `<div style="background: #1a1b26; color: #a9b1d6; font-family: monospace; padding: 10px; border: 1px solid #414868; margin-top: 10px;">
-                <span style="color: #7aa2f7;">-- MocLG Neovim Kernel Config</span><br>
-                local nethunter = require('nethunter_tools')<br><br>
-                vim.opt.number = true<br>
-                vim.keymap.set('n', '&lt;leader&gt;mk', function()<br>
-                &nbsp;&nbsp;print("Compiling Exynos 990 Kernel...")<br>
-                end)<br>
-                <div style="background: #414868; color: #fff; margin-top: 10px;"> [init.lua] -- INSERT -- </div>
-            </div>`;
-        },
-
-        'sudo': () => `<span style="color: #ffbd2e;">[ROOT ACCESS GRANTED]</span><br>KernelSU v0.9.5 detected. NetHunter active.`,
-        'clear': () => { historyContainer.innerHTML = ''; return null; },
-        'whoami': () => {
-    return `
-        <div style="line-height: 1.6; border-left: 2px solid #00ff9d; padding-left: 15px; margin: 10px 0;">
-            <span style="color: #00ff9d; font-weight: bold;">USER:</span> MocLG<br>
-            <span style="color: #00ff9d; font-weight: bold;">ROLE:</span> Kernel Developer / Systems Enthusiast<br>
-            <span style="color: #00ff9d; font-weight: bold;">HOST:</span> Arch Linux (Workstation) / Android 13 (Mobile)<br>
-            <span style="color: #00ff9d; font-weight: bold;">BIO:</span> 15-year-old developer specializing in Exynos 990 kernel optimization and Kali NetHunter integration.<br>
-            <span style="color: #7aa2f7; font-style: italic; display: block; margin-top: 8px;">"Compiling the future, one patch at a time."</span>
+            <article class="card kernel">
+                <div class="card-topline">Kernel Work</div>
+                <h3>android_kernel_samsung_exynos990_nethunter</h3>
+                <p>
+                    Custom 4.19.x kernel for Samsung Exynos990 series focused on N985F and optimized for Kali NetHunter.
+                </p>
+                <div class="card-meta">
+                    <span>C</span>
+                    <span>2 stars</span>
+                    <span>GPL-2.0</span>
+                </div>
+                <div class="tag-row">
+                    <span class="tag">C</span>
+                    <span class="tag">Android Kernel</span>
+                    <span class="tag">Exynos990</span>
+                    <span class="tag">NetHunter</span>
+                </div>
+                <div class="card-actions">
+                    <a href="https://github.com/MocLG/android_kernel_samsung_exynos990_nethunter" class="btn">View Source</a>
+                    <a href="https://github.com/MocLG/android_kernel_samsung_exynos990_nethunter/releases" class="btn secondary">Releases</a>
+                </div>
+            </article>
         </div>
-    `;
-},
-    };
 
-    let cmdHistory = [];
-    let historyIdx = -1;
-
-    input.addEventListener('keydown', (e) => {
-        // Tab Autocomplete
-        if (e.key === 'Tab') {
-            e.preventDefault();
-            const val = input.value.trim().toLowerCase();
-            const cmdList = Object.keys(commands);
-            const fileList = ['exynos990_kernel', 'rtl8723bs-main', 'spaceship-game', 'ecommerce', 'dotfiles'];
-            
-            if (val && !val.includes(' ')) {
-                const match = cmdList.find(c => c.startsWith(val));
-                if (match) input.value = match;
-            } else if (val.startsWith('cat ') || val.startsWith('open ')) {
-                const parts = val.split(' ');
-                const match = fileList.find(f => f.startsWith(parts[1]));
-                if (match) input.value = `${parts[0]} ${match}`;
-            }
-        }
-
-        // History Navigation
-        if (e.key === 'ArrowUp') {
-            e.preventDefault();
-            if (cmdHistory.length > 0 && historyIdx < cmdHistory.length - 1) {
-                historyIdx++;
-                input.value = cmdHistory[cmdHistory.length - 1 - historyIdx];
-            }
-        }
-        if (e.key === 'ArrowDown') {
-            e.preventDefault();
-            if (historyIdx > 0) {
-                historyIdx--;
-                input.value = cmdHistory[cmdHistory.length - 1 - historyIdx];
-            } else {
-                historyIdx = -1;
-                input.value = '';
-            }
-        }
-
-        // Execution
-        if (e.key === 'Enter') {
-            const fullInput = input.value.trim();
-            const [cmd, ...args] = fullInput.toLowerCase().split(' ');
-            
-            if (fullInput !== "") {
-                cmdHistory.push(fullInput);
-                historyIdx = -1;
-            }
-            
-            const line = document.createElement('div');
-            line.innerHTML = `<span style="color: #00ff9d; font-weight: bold;">[MocLG@GitHub]></span> ${fullInput}`;
-            historyContainer.appendChild(line);
-
-            if (commands[cmd]) {
-                const output = commands[cmd](args);
-                if (output) {
-                    const outLine = document.createElement('div');
-                    outLine.style.margin = "5px 0 15px 0";
-                    outLine.innerHTML = output;
-                    historyContainer.appendChild(outLine);
-                }
-            } else if (fullInput !== "") {
-                const err = document.createElement('div');
-                err.style.color = "#ff5f56";
-                err.innerText = `sh: command not found: ${cmd}`;
-                historyContainer.appendChild(err);
-            }
-
-            input.value = '';
-            body.scrollTop = body.scrollHeight;
-        }
-    });
-
-    body.addEventListener('click', () => input.focus());
-</script>
-
-        <h2>Recent Projects</h2>
-        <div class="grid">
-            <div class="card" class="tilt-card">
-                <h3>🚀 Galactic Engine</h3>
-                <p>
-                    A C++/GLFW based 2D space shooting game featuring procedural generation, custom physics, and particle systems.
-                </p>
-                <span class="tag">C++</span>
-                <span class="tag">Game Dev</span>
-                <br>
-                <a href="https://github.com/MocLG/spaceship-game-windows" class="btn">View Windows Repo</a>
-                <a href="https://github.com/MocLG/spaceship-game-linux" class="btn">View Linux Repo</a>
+        <div class="terminal-container">
+            <div class="terminal-header">
+                <span class="terminal-title">moclg@github: ~/repositories (zsh)</span>
+                <div class="terminal-controls" aria-hidden="true">
+                    <div class="terminal-control" style="background: #ff5f56;"></div>
+                    <div class="terminal-control" style="background: #ffbd2e;"></div>
+                    <div class="terminal-control" style="background: #27c93f;"></div>
+                </div>
             </div>
 
-            <div class="card" class="tilt-card">
-                <h3>🛒 E-Commerce Suite</h3>
-                <p>
-                    A full-stack shopping architecture with secure payment gateways, user authentication, and admin dashboards.
-                </p>
-                <span class="tag">Python</span>
-                <span class="tag">Django</span>
-                <span class="tag">Stripe</span>
-                <br>
-                <a href="https://github.com/MocLG/ECommerce" class="btn">View Repo</a>
-            </div>
-            
-             <div class="card" class="tilt-card">
-                <h3>🔧 Linux Dotfiles</h3>
-                <p>
-                    Custom configuration for Arch Linux, Neovim, and ZSH. Optimized for kernel development workflow.
-                </p>
-                <span class="tag">Lua</span>
-                <span class="tag">Bash</span>
-                <br>
-                <a href="https://github.com/typecraft-dev/dotfiles" class="btn">View Contribution</a>
+            <div id="terminal-body" class="terminal-body">
+                <div id="terminal-history">
+                    <p style="color: #8b949e; margin-bottom: 10px;">Welcome to MocLG's repository terminal.</p>
+                    <p style="color: #8b949e; margin-bottom: 20px;">Type <span style="color: #00ff9d;">help</span> or <span style="color: #00ff9d;">ls</span>.</p>
+                </div>
+                <div class="terminal-input-line">
+                    <span class="prompt">[MocLG@GitHub]&gt;</span>
+                    <input type="text" id="terminal-input" autofocus autocomplete="off">
+                </div>
             </div>
         </div>
+
+        <h2>GitHub Projects</h2>
+        <div class="grid" id="projects-grid"></div>
+
+        <footer>
+            <p>MocLG | Linux Kernel Development | Systems Programming</p>
+        </footer>
+    </div>
 
     <script>
-        // 1. Typing Effect
-        const textToType = "System Engineer | Android Kernel Dev | Security Researcher";
-        const typingElement = document.getElementById("typing-text");
-        let i = 0;
-
-        function typeWriter() {
-            if (i < textToType.length) {
-                typingElement.innerHTML += textToType.charAt(i);
-                i++;
-                setTimeout(typeWriter, 50);
+        const PROJECTS = [
+            {
+                name: "rtw88-rtl8723bs",
+                url: "https://github.com/MocLG/rtw88-rtl8723bs",
+                description: "A modern mac80211-based port of the RTL8723BS driver for the rtw88 framework, replacing the legacy staging driver.",
+                language: "C",
+                stars: 5,
+                forks: 1,
+                license: null,
+                defaultBranch: "main",
+                fork: false,
+                tags: ["C", "Linux Kernel", "mac80211", "rtw88", "RTL8723BS"]
+            },
+            {
+                name: "MocLG.github.io",
+                url: "https://github.com/MocLG/MocLG.github.io",
+                description: "Personal GitHub Pages site for MocLG.",
+                language: "HTML",
+                stars: 0,
+                forks: 0,
+                license: null,
+                defaultBranch: "main",
+                fork: false,
+                tags: ["HTML", "GitHub Pages", "Portfolio"]
+            },
+            {
+                name: "MocLG",
+                url: "https://github.com/MocLG/MocLG",
+                description: "Profile repository for the MocLG GitHub README.",
+                language: null,
+                stars: 0,
+                forks: 0,
+                license: null,
+                defaultBranch: "main",
+                fork: false,
+                tags: ["Profile", "README"]
+            },
+            {
+                name: "Decepticon",
+                url: "https://github.com/MocLG/Decepticon",
+                description: "Autonomous hacking agent for red-team workflows.",
+                language: "Python",
+                stars: 0,
+                forks: 0,
+                license: "Apache-2.0",
+                defaultBranch: "main",
+                fork: true,
+                tags: ["Python", "Security", "Fork"]
+            },
+            {
+                name: "hydrogen-cpp",
+                url: "https://github.com/MocLG/hydrogen-cpp",
+                description: "Fork of a hobby programming language implemented in C++.",
+                language: "C++",
+                stars: 0,
+                forks: 0,
+                license: "MIT",
+                defaultBranch: "master",
+                fork: true,
+                tags: ["C++", "Programming Language", "Fork"]
+            },
+            {
+                name: "android_kernel_samsung_exynos990_nethunter",
+                url: "https://github.com/MocLG/android_kernel_samsung_exynos990_nethunter",
+                description: "Custom 4.19.x kernel for Samsung Exynos990 series focused on N985F and optimized for Kali NetHunter.",
+                language: "C",
+                stars: 2,
+                forks: 0,
+                license: "GPL-2.0",
+                defaultBranch: "main",
+                fork: false,
+                tags: ["C", "Android Kernel", "Exynos990", "NetHunter"]
+            },
+            {
+                name: "Orbital",
+                url: "https://github.com/MocLG/Orbital",
+                description: "A high-performance terminal system dashboard in Rust with telemetry, diagnostics, and a recursive disk explorer.",
+                language: "Rust",
+                stars: 1,
+                forks: 0,
+                license: "MIT",
+                defaultBranch: "main",
+                fork: false,
+                tags: ["Rust", "Terminal UI", "Telemetry"]
+            },
+            {
+                name: "Overlay-Guard",
+                url: "https://github.com/MocLG/Overlay-Guard",
+                description: "Android 13+ utility for software-defined display privacy using sensor fusion and the WindowManager API.",
+                language: "Kotlin",
+                stars: 1,
+                forks: 0,
+                license: "Apache-2.0",
+                defaultBranch: "main",
+                fork: false,
+                tags: ["Kotlin", "Android", "Privacy"]
+            },
+            {
+                name: "stefanvujakk.github.io",
+                url: "https://github.com/MocLG/stefanvujakk.github.io",
+                description: "Fork of a portfolio site.",
+                language: "CSS",
+                stars: 0,
+                forks: 0,
+                license: null,
+                defaultBranch: "main",
+                fork: true,
+                tags: ["CSS", "Portfolio", "Fork"]
+            },
+            {
+                name: "elytramod",
+                url: "https://github.com/MocLG/elytramod",
+                description: "Public Java repository.",
+                language: "Java",
+                stars: 0,
+                forks: 0,
+                license: "NOASSERTION",
+                defaultBranch: "master",
+                fork: false,
+                tags: ["Java"]
+            },
+            {
+                name: "ECommerce",
+                url: "https://github.com/MocLG/ECommerce",
+                description: "Public Python e-commerce repository.",
+                language: "Python",
+                stars: 1,
+                forks: 0,
+                license: "MIT",
+                defaultBranch: "main",
+                fork: false,
+                tags: ["Python", "E-Commerce"]
+            },
+            {
+                name: "VFrost",
+                url: "https://github.com/MocLG/VFrost",
+                description: "Public Python repository.",
+                language: "Python",
+                stars: 0,
+                forks: 0,
+                license: "MIT",
+                defaultBranch: "main",
+                fork: false,
+                tags: ["Python"]
+            },
+            {
+                name: "Discord-backup-bot",
+                url: "https://github.com/MocLG/Discord-backup-bot",
+                description: "Discord bot that lets consenting users join a new server.",
+                language: "Python",
+                stars: 0,
+                forks: 1,
+                license: "MIT",
+                defaultBranch: "main",
+                fork: false,
+                tags: ["Python", "Discord", "Bot"]
+            },
+            {
+                name: "multidisabler-samsung",
+                url: "https://github.com/MocLG/multidisabler-samsung",
+                description: "Forked Samsung utility that disables FBE, proca, Vaultkeeper, and stock recovery auto-reflash.",
+                language: "Shell",
+                stars: 0,
+                forks: 0,
+                license: null,
+                defaultBranch: "master",
+                fork: true,
+                tags: ["Shell", "Samsung", "Fork"]
+            },
+            {
+                name: "spaceship-game-windows",
+                url: "https://github.com/MocLG/spaceship-game-windows",
+                description: "C++ spaceship game repository for Windows.",
+                language: "C++",
+                stars: 1,
+                forks: 0,
+                license: null,
+                defaultBranch: "main",
+                fork: false,
+                tags: ["C++", "Game Dev", "Windows"]
+            },
+            {
+                name: "after-omarchy-setup",
+                url: "https://github.com/MocLG/after-omarchy-setup",
+                description: "Shell setup scripts for post-Omarchy configuration.",
+                language: "Shell",
+                stars: 1,
+                forks: 0,
+                license: null,
+                defaultBranch: "main",
+                fork: false,
+                tags: ["Shell", "Setup"]
+            },
+            {
+                name: "spaceship-game-linux",
+                url: "https://github.com/MocLG/spaceship-game-linux",
+                description: "C++ spaceship game repository for Linux.",
+                language: "C++",
+                stars: 1,
+                forks: 0,
+                license: null,
+                defaultBranch: "main",
+                fork: false,
+                tags: ["C++", "Game Dev", "Linux"]
+            },
+            {
+                name: "dotfiles",
+                url: "https://github.com/MocLG/dotfiles",
+                description: "Forked Lua dotfiles and editor configuration repository.",
+                language: "Lua",
+                stars: 0,
+                forks: 0,
+                license: null,
+                defaultBranch: "master",
+                fork: true,
+                tags: ["Lua", "Dotfiles", "Fork"]
+            },
+            {
+                name: "kiMocLG",
+                url: "https://github.com/MocLG/kiMocLG",
+                description: "Public Java repository.",
+                language: "Java",
+                stars: 0,
+                forks: 0,
+                license: "CC0-1.0",
+                defaultBranch: "1.21",
+                fork: false,
+                tags: ["Java"]
             }
+        ];
+
+        const GITHUB_PROFILE = {
+            login: "MocLG",
+            name: "Luka Gejak",
+            bio: "Student at JU Elektrotehnička škola \"Nikola Tesla\"",
+            birthday: "2010-07-02",
+            site: "https://moclg.me",
+            github: "https://github.com/MocLG",
+            publicRepos: 19,
+            following: 0
+        };
+
+        const input = document.getElementById("terminal-input");
+        const historyContainer = document.getElementById("terminal-history");
+        const terminalBody = document.getElementById("terminal-body");
+        const projectsGrid = document.getElementById("projects-grid");
+        const repoLookup = new Map(PROJECTS.map((project) => [project.name.toLowerCase(), project]));
+
+        function escapeHtml(value) {
+            return String(value)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
         }
-        window.onload = typeWriter;
 
-        // 2. 3D Tilt Effect logic
-        document.querySelectorAll('.card').forEach(card => {
-            card.addEventListener('mousemove', (e) => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
-                
-                const rotateX = ((y - centerY) / centerY) * -5; // Tilt intensity
-                const rotateY = ((x - centerX) / centerX) * 5;
+        function calculateAge(birthday) {
+            const today = new Date();
+            const birthDate = new Date(`${birthday}T00:00:00`);
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const birthdayPassed = today.getMonth() > birthDate.getMonth()
+                || (today.getMonth() === birthDate.getMonth() && today.getDate() >= birthDate.getDate());
 
-                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-            });
+            return birthdayPassed ? age : age - 1;
+        }
 
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
-            });
+        function pluralize(value, noun) {
+            return `${value} ${noun}${value === 1 ? "" : "s"}`;
+        }
+
+        function renderTags(project) {
+            return project.tags.map((tag) => `<span class="tag">${escapeHtml(tag)}</span>`).join("");
+        }
+
+        function renderProjectCards() {
+            projectsGrid.innerHTML = PROJECTS.map((project, index) => {
+                const repoType = project.fork ? "Fork" : "Repository";
+                const projectClass = index === 0 ? "card project-primary" : "card";
+                const language = project.language || "No primary language";
+                const license = project.license || "No license listed";
+
+                return `
+                    <article class="${projectClass}">
+                        <div class="card-topline">${index === 0 ? "Primary Project" : repoType}</div>
+                        <h3>${escapeHtml(project.name)}</h3>
+                        <p>${escapeHtml(project.description)}</p>
+                        <div class="card-meta">
+                            <span>${escapeHtml(language)}</span>
+                            <span>${pluralize(project.stars, "star")}</span>
+                            <span>${pluralize(project.forks, "fork")}</span>
+                            <span>${escapeHtml(license)}</span>
+                        </div>
+                        <div class="tag-row">${renderTags(project)}</div>
+                        <div class="card-actions">
+                            <a href="${project.url}" class="btn">View Repo</a>
+                        </div>
+                    </article>
+                `;
+            }).join("");
+        }
+
+        function renderRepoList() {
+            return `
+                <span class="terminal-label">${PROJECTS.length} public repositories:</span>
+                <div class="repo-list">
+                    ${PROJECTS.map((project) => `<span>${escapeHtml(project.name)}</span>`).join("")}
+                </div>
+            `;
+        }
+
+        function resolveProject(args) {
+            const query = args.join(" ").trim();
+
+            if (!query) {
+                return { error: "Usage: cat [repo-name] or open [repo-name]" };
+            }
+
+            const exact = repoLookup.get(query.toLowerCase());
+            if (exact) {
+                return { project: exact };
+            }
+
+            const matches = PROJECTS.filter((project) => project.name.toLowerCase().startsWith(query.toLowerCase()));
+            if (matches.length === 1) {
+                return { project: matches[0] };
+            }
+
+            if (matches.length > 1) {
+                return { error: `Multiple matches: ${matches.map((project) => project.name).join(", ")}` };
+            }
+
+            return { error: `Repo "${escapeHtml(query)}" not found. Run ls for exact names.` };
+        }
+
+        function renderProjectDetails(project) {
+            return `
+                <div class="terminal-card">
+                    <span class="terminal-label">REPO:</span> ${escapeHtml(project.name)}<br>
+                    <span class="terminal-label">DESC:</span> ${escapeHtml(project.description)}<br>
+                    <span class="terminal-label">LANG:</span> ${escapeHtml(project.language || "No primary language")}<br>
+                    <span class="terminal-label">TYPE:</span> ${project.fork ? "Fork" : "Source"}<br>
+                    <span class="terminal-label">BRANCH:</span> ${escapeHtml(project.defaultBranch)}<br>
+                    <span class="terminal-label">STATS:</span> ${pluralize(project.stars, "star")}, ${pluralize(project.forks, "fork")}<br>
+                    <span class="terminal-label">LICENSE:</span> ${escapeHtml(project.license || "No license listed")}<br>
+                    <span class="terminal-label">URL:</span> ${escapeHtml(project.url)}
+                </div>
+            `;
+        }
+
+        const commands = {
+            help: () => `Available commands:<br>
+                <span class="terminal-label">fastfetch</span> - System and repository info<br>
+                <span class="terminal-label">ls</span> - List exact GitHub repo names<br>
+                <span class="terminal-label">cat [repo-name]</span> - View repository details<br>
+                <span class="terminal-label">open [repo-name]</span> - Open GitHub repo in a new tab<br>
+                <span class="terminal-label">vim dotfiles</span> - View editor config preview<br>
+                <span class="terminal-label">whoami</span> - About MocLG<br>
+                <span class="terminal-label">sudo</span> - Check root status<br>
+                <span class="terminal-label">clear</span> - Wipe terminal`,
+
+            fastfetch: () => `
+                <div style="display: flex; gap: 25px; margin-top: 10px; flex-wrap: wrap; align-items: center;">
+                    <pre style="color: #00ff9d; font-weight: bold; line-height: 1.1; font-size: 1.2rem; font-family: monospace; margin: 0;">
+___  ___           _     _____
+|  \\/  |          | |   |  __ \\
+| .  . | ___   ___| |   | |  \\/
+| |\\/| |/ _ \\ / __| |   | | __
+| |  | | (_) | (__| |___| |_\\ \\
+\\_|  |_/\\___/ \\___\\_____/\\____/
+                    </pre>
+                    <div style="line-height: 1.5;">
+                        <span style="color: #00ff9d; font-weight: bold;">USER:</span> ${escapeHtml(GITHUB_PROFILE.login)}<br>
+                        <span style="color: #00ff9d; font-weight: bold;">PRIMARY:</span> ${escapeHtml(PROJECTS[0].name)}<br>
+                        <span style="color: #00ff9d; font-weight: bold;">REPOS:</span> ${PROJECTS.length} public repositories<br>
+                        <span style="color: #00ff9d; font-weight: bold;">LANGS:</span> C, C++, Python, Assembly, Shell, Kotlin, Rust<br>
+                        <span style="color: #00ff9d; font-weight: bold;">STATUS:</span> <span style="color: #27c93f;">Online & Compiling...</span>
+                    </div>
+                </div>`,
+
+            ls: () => renderRepoList(),
+
+            cat: (args) => {
+                const result = resolveProject(args);
+                if (result.error) {
+                    return result.error;
+                }
+
+                return renderProjectDetails(result.project);
+            },
+
+            open: (args) => {
+                const result = resolveProject(args);
+                if (result.error) {
+                    return result.error.replace("cat [repo-name] or open [repo-name]", "open [repo-name]");
+                }
+
+                window.open(result.project.url, "_blank", "noopener");
+                return `Opening ${escapeHtml(result.project.name)} on GitHub...`;
+            },
+
+            vim: (args) => {
+                if ((args[0] || "").toLowerCase() !== "dotfiles") {
+                    return "Usage: vim dotfiles";
+                }
+
+                return `<div style="background: #1a1b26; color: #a9b1d6; font-family: monospace; padding: 10px; border: 1px solid #414868; margin-top: 10px;">
+                    <span style="color: #7aa2f7;">-- MocLG dotfiles preview</span><br>
+                    local editor = require("kernel_workflow")<br><br>
+                    vim.opt.number = true<br>
+                    vim.keymap.set("n", "&lt;leader&gt;mk", function()<br>
+                    &nbsp;&nbsp;print("Building current kernel target...")<br>
+                    end)<br>
+                    <div style="background: #414868; color: #fff; margin-top: 10px;"> [init.lua] -- NORMAL -- </div>
+                </div>`;
+            },
+
+            sudo: () => `<span style="color: #ffbd2e;">[ROOT ACCESS GRANTED]</span><br>KernelSU v0.9.5 detected. NetHunter active.<br>GitHub: https://github.com/MocLG<br>Indexed repos: ${PROJECTS.length}`,
+
+            clear: () => {
+                historyContainer.innerHTML = "";
+                return null;
+            },
+
+            whoami: () => `
+                <div style="line-height: 1.6; border-left: 2px solid #00ff9d; padding-left: 15px; margin: 10px 0;">
+                    <span style="color: #00ff9d; font-weight: bold;">USER:</span> ${escapeHtml(GITHUB_PROFILE.login)}<br>
+                    <span style="color: #00ff9d; font-weight: bold;">REAL NAME:</span> ${escapeHtml(GITHUB_PROFILE.name)}<br>
+                    <span style="color: #00ff9d; font-weight: bold;">AGE:</span> ${calculateAge(GITHUB_PROFILE.birthday)} (born July 2, 2010)<br>
+                    <span style="color: #00ff9d; font-weight: bold;">ROLE:</span> Student / Kernel Developer / Systems Enthusiast<br>
+                    <span style="color: #00ff9d; font-weight: bold;">BIO:</span> ${escapeHtml(GITHUB_PROFILE.bio)}<br>
+                    <span style="color: #00ff9d; font-weight: bold;">SITE:</span> ${escapeHtml(GITHUB_PROFILE.site)}<br>
+                    <span style="color: #00ff9d; font-weight: bold;">GITHUB:</span> ${escapeHtml(GITHUB_PROFILE.github)}<br>
+                    <span style="color: #00ff9d; font-weight: bold;">FOCUS:</span> rtw88 RTL8723BS porting, mac80211, Android kernel work<br>
+                    <span style="color: #7aa2f7; font-style: italic; display: block; margin-top: 8px;">"Compiling the future, one patch at a time."</span>
+                </div>
+            `
+        };
+
+        let cmdHistory = [];
+        let historyIdx = -1;
+
+        input.addEventListener("keydown", (event) => {
+            if (event.key === "Tab") {
+                event.preventDefault();
+                const rawValue = input.value.trim();
+                const lowerValue = rawValue.toLowerCase();
+                const commandNames = Object.keys(commands);
+
+                if (rawValue && !rawValue.includes(" ")) {
+                    const match = commandNames.find((command) => command.startsWith(lowerValue));
+                    if (match) {
+                        input.value = match;
+                    }
+                    return;
+                }
+
+                if (lowerValue.startsWith("cat ") || lowerValue.startsWith("open ")) {
+                    const [command, partial = ""] = rawValue.split(/\s+/, 2);
+                    const match = PROJECTS.find((project) => project.name.toLowerCase().startsWith(partial.toLowerCase()));
+                    if (match) {
+                        input.value = `${command} ${match.name}`;
+                    }
+                }
+            }
+
+            if (event.key === "ArrowUp") {
+                event.preventDefault();
+                if (cmdHistory.length > 0 && historyIdx < cmdHistory.length - 1) {
+                    historyIdx++;
+                    input.value = cmdHistory[cmdHistory.length - 1 - historyIdx];
+                }
+            }
+
+            if (event.key === "ArrowDown") {
+                event.preventDefault();
+                if (historyIdx > 0) {
+                    historyIdx--;
+                    input.value = cmdHistory[cmdHistory.length - 1 - historyIdx];
+                } else {
+                    historyIdx = -1;
+                    input.value = "";
+                }
+            }
+
+            if (event.key === "Enter") {
+                const fullInput = input.value.trim();
+                if (!fullInput) {
+                    return;
+                }
+
+                const [rawCommand, ...args] = fullInput.split(/\s+/);
+                const command = rawCommand.toLowerCase();
+                cmdHistory.push(fullInput);
+                historyIdx = -1;
+
+                const line = document.createElement("div");
+                line.innerHTML = `<span class="prompt">[MocLG@GitHub]&gt;</span> ${escapeHtml(fullInput)}`;
+                historyContainer.appendChild(line);
+
+                if (commands[command]) {
+                    const output = commands[command](args);
+                    if (output) {
+                        const outLine = document.createElement("div");
+                        outLine.style.margin = "5px 0 15px 0";
+                        outLine.innerHTML = output;
+                        historyContainer.appendChild(outLine);
+                    }
+                } else {
+                    const error = document.createElement("div");
+                    error.style.color = "#ff5f56";
+                    error.innerText = `sh: command not found: ${command}`;
+                    historyContainer.appendChild(error);
+                }
+
+                input.value = "";
+                terminalBody.scrollTop = terminalBody.scrollHeight;
+            }
         });
 
-        // 3. Constellation Background (Canvas)
-        const canvas = document.getElementById('canvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        terminalBody.addEventListener("click", () => input.focus());
 
-        const stars = [];
-        const numStars = 100;
+        function enableCardTilt() {
+            document.querySelectorAll(".card").forEach((card) => {
+                card.addEventListener("mousemove", (event) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = event.clientX - rect.left;
+                    const y = event.clientY - rect.top;
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    const rotateX = ((y - centerY) / centerY) * -5;
+                    const rotateY = ((x - centerX) / centerX) * 5;
 
-        for(let i = 0; i < numStars; i++) {
-            stars.push({
-                x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height,
-                vx: (Math.random() - 0.5) * 0.5,
-                vy: (Math.random() - 0.5) * 0.5
-            });
-        }
+                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                });
 
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = '#00ff9d';
-            ctx.strokeStyle = 'rgba(0, 255, 157, 0.1)';
-
-            stars.forEach((star, index) => {
-                star.x += star.vx;
-                star.y += star.vy;
-
-                if(star.x < 0 || star.x > canvas.width) star.vx *= -1;
-                if(star.y < 0 || star.y > canvas.height) star.vy *= -1;
-
-                ctx.beginPath();
-                ctx.arc(star.x, star.y, 2, 0, Math.PI * 2);
-                ctx.fill();
-
-                // Draw lines to nearby stars
-                stars.forEach((star2, index2) => {
-                    if(index !== index2) {
-                        const dx = star.x - star2.x;
-                        const dy = star.y - star2.y;
-                        const dist = Math.sqrt(dx*dx + dy*dy);
-                        if(dist < 150) {
-                            ctx.beginPath();
-                            ctx.moveTo(star.x, star.y);
-                            ctx.lineTo(star2.x, star2.y);
-                            ctx.stroke();
-                        }
-                    }
+                card.addEventListener("mouseleave", () => {
+                    card.style.transform = "perspective(1000px) rotateX(0) rotateY(0)";
                 });
             });
-            requestAnimationFrame(animate);
         }
-        animate();
 
-        window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+        function startTyping() {
+            const textToType = "Linux Kernel Developer | Wireless Driver Porting | Systems Programming";
+            const typingElement = document.getElementById("typing-text");
+            let index = 0;
+
+            function typeWriter() {
+                if (index < textToType.length) {
+                    typingElement.innerHTML += textToType.charAt(index);
+                    index++;
+                    setTimeout(typeWriter, 50);
+                }
+            }
+
+            typeWriter();
+        }
+
+        function startCanvas() {
+            const canvas = document.getElementById("canvas");
+            const ctx = canvas.getContext("2d");
+            const stars = [];
+            const numStars = 100;
+
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+
+            resizeCanvas();
+
+            for (let index = 0; index < numStars; index++) {
+                stars.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    vx: (Math.random() - 0.5) * 0.5,
+                    vy: (Math.random() - 0.5) * 0.5
+                });
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = "#00ff9d";
+                ctx.strokeStyle = "rgba(0, 255, 157, 0.1)";
+
+                stars.forEach((star, index) => {
+                    star.x += star.vx;
+                    star.y += star.vy;
+
+                    if (star.x < 0 || star.x > canvas.width) star.vx *= -1;
+                    if (star.y < 0 || star.y > canvas.height) star.vy *= -1;
+
+                    ctx.beginPath();
+                    ctx.arc(star.x, star.y, 2, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    stars.forEach((nearbyStar, nearbyIndex) => {
+                        if (index === nearbyIndex) return;
+
+                        const dx = star.x - nearbyStar.x;
+                        const dy = star.y - nearbyStar.y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+
+                        if (distance < 150) {
+                            ctx.beginPath();
+                            ctx.moveTo(star.x, star.y);
+                            ctx.lineTo(nearbyStar.x, nearbyStar.y);
+                            ctx.stroke();
+                        }
+                    });
+                });
+
+                requestAnimationFrame(animate);
+            }
+
+            window.addEventListener("resize", resizeCanvas);
+            animate();
+        }
+
+        window.addEventListener("load", () => {
+            window.scrollTo(0, 0);
+            renderProjectCards();
+            enableCardTilt();
+            startTyping();
+            startCanvas();
         });
     </script>
 </body>
