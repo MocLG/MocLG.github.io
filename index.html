@@ -505,6 +505,7 @@
 
         <h2><span class="status-dot"></span>Active Development</h2>
         <div class="grid">
+            <!-- ACTIVE:START -->
             <article class="card kernel">
                 <div class="card-topline">Primary Project</div>
                 <h3>rtw88-rtl8723bs</h3>
@@ -513,7 +514,7 @@
                 </p>
                 <div class="card-meta">
                     <span>C</span>
-                    <span>5 stars</span>
+                    <span>8 stars</span>
                     <span>1 fork</span>
                 </div>
                 <div class="tag-row">
@@ -573,6 +574,7 @@
                     <a href="https://github.com/MocLG/android_kernel_samsung_exynos990_nethunter/releases" class="btn secondary">Releases</a>
                 </div>
             </article>
+            <!-- ACTIVE:END -->
         </div>
 
         <div class="terminal-container">
@@ -592,7 +594,7 @@
                 </div>
                 <div class="terminal-input-line">
                     <span class="prompt">[MocLG@GitHub]&gt;</span>
-                    <input type="text" id="terminal-input" autofocus autocomplete="off">
+                    <input type="text" id="terminal-input" autocomplete="off">
                 </div>
             </div>
         </div>
@@ -606,30 +608,19 @@
     </div>
 
     <script>
+        // <!-- PROJECTS:START -->
         const PROJECTS = [
             {
                 name: "rtw88-rtl8723bs",
                 url: "https://github.com/MocLG/rtw88-rtl8723bs",
                 description: "A modern mac80211-based port of the RTL8723BS driver for the rtw88 framework, replacing the legacy staging driver.",
                 language: "C",
-                stars: 5,
+                stars: 8,
                 forks: 1,
-                license: null,
+                license: "GPL-2.0",
                 defaultBranch: "main",
                 fork: false,
                 tags: ["C", "Linux Kernel", "mac80211", "rtw88", "RTL8723BS"]
-            },
-            {
-                name: "rtl8723bs-5.2.17",
-                url: "https://github.com/MocLG/rtl8723bs-5.2.17",
-                description: "Vendor driver of RTL8723BS version 5.2.17.",
-                language: "C",
-                stars: 0,
-                forks: 0,
-                license: null,
-                defaultBranch: "master",
-                fork: false,
-                tags: ["C", "Linux Driver", "WiFi", "RTL8723BS", "Vendor Driver"]
             },
             {
                 name: "android_kernel_samsung_exynos990_nethunter",
@@ -644,6 +635,30 @@
                 tags: ["C", "Android Kernel", "Exynos990", "NetHunter"]
             },
             {
+                name: "kernelctl",
+                url: "https://github.com/MocLG/kernelctl",
+                description: "Unified kernel and boot configuration management across every Linux bootloader — single-binary CLI and TUI",
+                language: "Rust",
+                stars: 1,
+                forks: 0,
+                license: "GPL-3.0",
+                defaultBranch: "main",
+                fork: false,
+                tags: ["Rust"]
+            },
+            {
+                name: "Overlay-Guard",
+                url: "https://github.com/MocLG/Overlay-Guard",
+                description: "Android 13+ utility for software-defined display privacy using sensor fusion and the WindowManager API.",
+                language: "Kotlin",
+                stars: 4,
+                forks: 0,
+                license: "GPL-3.0",
+                defaultBranch: "main",
+                fork: false,
+                tags: ["Kotlin", "Android", "Privacy"]
+            },
+            {
                 name: "Orbital",
                 url: "https://github.com/MocLG/Orbital",
                 description: "A high-performance terminal system dashboard in Rust with telemetry, diagnostics, and a recursive disk explorer.",
@@ -656,148 +671,16 @@
                 tags: ["Rust", "Terminal UI", "Telemetry"]
             },
             {
-                name: "Overlay-Guard",
-                url: "https://github.com/MocLG/Overlay-Guard",
-                description: "Android 13+ utility for software-defined display privacy using sensor fusion and the WindowManager API.",
+                name: "KernelFeed",
+                url: "https://github.com/MocLG/KernelFeed",
+                description: "A modern Android LKML(Linux kernel mailing list) viewer.",
                 language: "Kotlin",
-                stars: 1,
-                forks: 0,
-                license: "Apache-2.0",
-                defaultBranch: "main",
-                fork: false,
-                tags: ["Kotlin", "Android", "Privacy"]
-            },
-            {
-                name: "MocLG.github.io",
-                url: "https://github.com/MocLG/MocLG.github.io",
-                description: "Personal GitHub Pages site for MocLG.",
-                language: "HTML",
                 stars: 0,
                 forks: 0,
-                license: null,
-                defaultBranch: "main",
-                fork: false,
-                tags: ["HTML", "GitHub Pages", "Portfolio"]
-            },
-            {
-                name: "MocLG",
-                url: "https://github.com/MocLG/MocLG",
-                description: "Profile repository for the MocLG GitHub README.",
-                language: null,
-                stars: 0,
-                forks: 0,
-                license: null,
-                defaultBranch: "main",
-                fork: false,
-                tags: ["Profile", "README"]
-            },
-            {
-                name: "Decepticon",
-                url: "https://github.com/MocLG/Decepticon",
-                description: "Autonomous hacking agent for red-team workflows.",
-                language: "Python",
-                stars: 0,
-                forks: 0,
-                license: "Apache-2.0",
-                defaultBranch: "main",
-                fork: true,
-                tags: ["Python", "Security", "Fork"]
-            },
-            {
-                name: "hydrogen-cpp",
-                url: "https://github.com/MocLG/hydrogen-cpp",
-                description: "Fork of a hobby programming language implemented in C++.",
-                language: "C++",
-                stars: 0,
-                forks: 0,
-                license: "MIT",
-                defaultBranch: "master",
-                fork: true,
-                tags: ["C++", "Programming Language", "Fork"]
-            },
-            {
-                name: "stefanvujakk.github.io",
-                url: "https://github.com/MocLG/stefanvujakk.github.io",
-                description: "Fork of a portfolio site.",
-                language: "CSS",
-                stars: 0,
-                forks: 0,
-                license: null,
-                defaultBranch: "main",
-                fork: true,
-                tags: ["CSS", "Portfolio", "Fork"]
-            },
-            {
-                name: "elytramod",
-                url: "https://github.com/MocLG/elytramod",
-                description: "Public Java repository.",
-                language: "Java",
-                stars: 0,
-                forks: 0,
-                license: "NOASSERTION",
+                license: "GPL-3.0",
                 defaultBranch: "master",
                 fork: false,
-                tags: ["Java"]
-            },
-            {
-                name: "ECommerce",
-                url: "https://github.com/MocLG/ECommerce",
-                description: "Public Python e-commerce repository.",
-                language: "Python",
-                stars: 1,
-                forks: 0,
-                license: "MIT",
-                defaultBranch: "main",
-                fork: false,
-                tags: ["Python", "E-Commerce"]
-            },
-            {
-                name: "VFrost",
-                url: "https://github.com/MocLG/VFrost",
-                description: "Public Python repository.",
-                language: "Python",
-                stars: 0,
-                forks: 0,
-                license: "MIT",
-                defaultBranch: "main",
-                fork: false,
-                tags: ["Python"]
-            },
-            {
-                name: "Discord-backup-bot",
-                url: "https://github.com/MocLG/Discord-backup-bot",
-                description: "Discord bot that lets consenting users join a new server.",
-                language: "Python",
-                stars: 0,
-                forks: 1,
-                license: "MIT",
-                defaultBranch: "main",
-                fork: false,
-                tags: ["Python", "Discord", "Bot"]
-            },
-            {
-                name: "multidisabler-samsung",
-                url: "https://github.com/MocLG/multidisabler-samsung",
-                description: "Forked Samsung utility that disables FBE, proca, Vaultkeeper, and stock recovery auto-reflash.",
-                language: "Shell",
-                stars: 0,
-                forks: 0,
-                license: null,
-                defaultBranch: "master",
-                fork: true,
-                tags: ["Shell", "Samsung", "Fork"]
-            },
-            {
-                name: "spaceship-game-windows",
-                url: "https://github.com/MocLG/spaceship-game-windows",
-                description: "C++ spaceship game repository for Windows.",
-                language: "C++",
-                stars: 1,
-                forks: 0,
-                license: null,
-                defaultBranch: "main",
-                fork: false,
-                tags: ["C++", "Game Dev", "Windows"]
+                tags: ["Kotlin"]
             },
             {
                 name: "after-omarchy-setup",
@@ -812,6 +695,18 @@
                 tags: ["Shell", "Setup"]
             },
             {
+                name: "ECommerce",
+                url: "https://github.com/MocLG/ECommerce",
+                description: "Public Python e-commerce repository.",
+                language: "Python",
+                stars: 1,
+                forks: 0,
+                license: "MIT",
+                defaultBranch: "main",
+                fork: false,
+                tags: ["Python", "E-Commerce"]
+            },
+            {
                 name: "spaceship-game-linux",
                 url: "https://github.com/MocLG/spaceship-game-linux",
                 description: "C++ spaceship game repository for Linux.",
@@ -822,6 +717,42 @@
                 defaultBranch: "main",
                 fork: false,
                 tags: ["C++", "Game Dev", "Linux"]
+            },
+            {
+                name: "spaceship-game-windows",
+                url: "https://github.com/MocLG/spaceship-game-windows",
+                description: "C++ spaceship game repository for Windows.",
+                language: "C++",
+                stars: 1,
+                forks: 0,
+                license: null,
+                defaultBranch: "main",
+                fork: false,
+                tags: ["C++", "Game Dev", "Windows"]
+            },
+            {
+                name: "Decepticon",
+                url: "https://github.com/MocLG/Decepticon",
+                description: "Autonomous hacking agent for red-team workflows.",
+                language: "Python",
+                stars: 0,
+                forks: 0,
+                license: "Apache-2.0",
+                defaultBranch: "main",
+                fork: true,
+                tags: ["Python", "Security", "Fork"]
+            },
+            {
+                name: "Discord-backup-bot",
+                url: "https://github.com/MocLG/Discord-backup-bot",
+                description: "Discord bot that lets consenting users join a new server.",
+                language: "Python",
+                stars: 0,
+                forks: 1,
+                license: "MIT",
+                defaultBranch: "main",
+                fork: false,
+                tags: ["Python", "Discord", "Bot"]
             },
             {
                 name: "dotfiles",
@@ -836,6 +767,42 @@
                 tags: ["Lua", "Dotfiles", "Fork"]
             },
             {
+                name: "elytramod",
+                url: "https://github.com/MocLG/elytramod",
+                description: "Public Java repository.",
+                language: "Java",
+                stars: 0,
+                forks: 0,
+                license: null,
+                defaultBranch: "master",
+                fork: false,
+                tags: ["Java"]
+            },
+            {
+                name: "GTFOBins.github.io",
+                url: "https://github.com/MocLG/GTFOBins.github.io",
+                description: "GTFOBins is a curated list of Unix-like executables that can be used to bypass local security restrictions in misconfigured systems.",
+                language: "YAML",
+                stars: 0,
+                forks: 0,
+                license: "GPL-3.0",
+                defaultBranch: "master",
+                fork: true,
+                tags: ["YAML", "Fork"]
+            },
+            {
+                name: "hydrogen-cpp",
+                url: "https://github.com/MocLG/hydrogen-cpp",
+                description: "Fork of a hobby programming language implemented in C++.",
+                language: "C++",
+                stars: 0,
+                forks: 0,
+                license: "MIT",
+                defaultBranch: "master",
+                fork: true,
+                tags: ["C++", "Programming Language", "Fork"]
+            },
+            {
                 name: "kiMocLG",
                 url: "https://github.com/MocLG/kiMocLG",
                 description: "Public Java repository.",
@@ -846,8 +813,117 @@
                 defaultBranch: "1.21",
                 fork: false,
                 tags: ["Java"]
+            },
+            {
+                name: "MocLG",
+                url: "https://github.com/MocLG/MocLG",
+                description: "Profile repository for the MocLG GitHub README.",
+                language: null,
+                stars: 0,
+                forks: 0,
+                license: null,
+                defaultBranch: "main",
+                fork: false,
+                tags: ["Profile", "README"]
+            },
+            {
+                name: "MocLG.github.io",
+                url: "https://github.com/MocLG/MocLG.github.io",
+                description: "Personal GitHub Pages site for MocLG.",
+                language: "HTML",
+                stars: 0,
+                forks: 0,
+                license: null,
+                defaultBranch: "main",
+                fork: false,
+                tags: ["HTML", "GitHub Pages", "Portfolio"]
+            },
+            {
+                name: "multidisabler-samsung",
+                url: "https://github.com/MocLG/multidisabler-samsung",
+                description: "Forked Samsung utility that disables FBE, proca, Vaultkeeper, and stock recovery auto-reflash.",
+                language: "Shell",
+                stars: 0,
+                forks: 0,
+                license: null,
+                defaultBranch: "master",
+                fork: true,
+                tags: ["Shell", "Samsung", "Fork"]
+            },
+            {
+                name: "nexmon",
+                url: "https://github.com/MocLG/nexmon",
+                description: "The C-based Firmware Patching Framework for Broadcom/Cypress WiFi Chips that enables Monitor Mode, Frame Injection and much more",
+                language: "C",
+                stars: 0,
+                forks: 0,
+                license: "GPL-3.0",
+                defaultBranch: "master",
+                fork: true,
+                tags: ["C", "Fork"]
+            },
+            {
+                name: "rtl8723bs-5.2.17",
+                url: "https://github.com/MocLG/rtl8723bs-5.2.17",
+                description: "Vendor driver of RTL8723BS version 5.2.17.",
+                language: "C",
+                stars: 0,
+                forks: 0,
+                license: null,
+                defaultBranch: "master",
+                fork: false,
+                tags: ["C", "Linux Driver", "WiFi", "RTL8723BS", "Vendor Driver"]
+            },
+            {
+                name: "rtw",
+                url: "https://github.com/MocLG/rtw",
+                description: "A clone from wireless-next to manage Realtek wifi drivers",
+                language: "C",
+                stars: 0,
+                forks: 0,
+                license: null,
+                defaultBranch: "rtw-next",
+                fork: true,
+                tags: ["C", "Fork"]
+            },
+            {
+                name: "stefanvujakk.github.io",
+                url: "https://github.com/MocLG/stefanvujakk.github.io",
+                description: "Fork of a portfolio site.",
+                language: "CSS",
+                stars: 0,
+                forks: 0,
+                license: null,
+                defaultBranch: "main",
+                fork: true,
+                tags: ["CSS", "Portfolio", "Fork"]
+            },
+            {
+                name: "term.everything",
+                url: "https://github.com/MocLG/term.everything",
+                description: "Run any GUI app in the terminal❗",
+                language: "Go",
+                stars: 0,
+                forks: 0,
+                license: "AGPL-3.0",
+                defaultBranch: "main",
+                fork: true,
+                tags: ["Go", "Fork"]
+            },
+            {
+                name: "VFrost",
+                url: "https://github.com/MocLG/VFrost",
+                description: "Public Python repository.",
+                language: "Python",
+                stars: 0,
+                forks: 0,
+                license: "MIT",
+                defaultBranch: "main",
+                fork: false,
+                tags: ["Python"]
             }
         ];
+        // <!-- PROJECTS:END -->
 
         const GITHUB_PROFILE = {
             login: "MocLG",
@@ -1235,6 +1311,12 @@ ___  ___           _     _____
 
             window.addEventListener("resize", resizeCanvas);
             animate();
+        }
+
+        // Anchor at the top before paint; waiting for "load" lets the browser restore
+        // a previous scroll position and only correct it once every image has settled.
+        if ("scrollRestoration" in history) {
+            history.scrollRestoration = "manual";
         }
 
         window.addEventListener("load", () => {
