@@ -452,7 +452,7 @@
         "name": "Luka Gejak",
         "additionalName": "MocLG",
         "url": "https://moclg.me",
-        "jobTitle": "Linux Systems Programmer & Kernel Developer",
+        "jobTitle": "Linux Kernel Developer",
         "knowsAbout": [
             "Linux kernel development",
             "Wireless networking drivers",
@@ -503,79 +503,101 @@
             </div>
         </section>
 
-        <h2><span class="status-dot"></span>Active Development</h2>
+        <h2><span class="status-dot"></span>Selected Work</h2>
         <div class="grid">
             <!-- ACTIVE:START -->
             <article class="card kernel">
-                <div class="card-topline">Primary Project</div>
+                <div class="card-topline">Upstreamed to mainline Linux 7.4</div>
                 <h3>rtw88-rtl8723bs</h3>
                 <p>
-                    A modern mac80211-based port of the RTL8723BS driver for the rtw88 framework, replacing the legacy staging driver.
+                    Authored mac80211-based RTL8723B/RTL8723BS support for rtw88. It is now part of mainline Linux; the old staging driver has been removed.
                 </p>
                 <div class="card-meta">
                     <span>C</span>
-                    <span>10 stars</span>
-                    <span>1 fork</span>
+                    <span>Mainline Linux 7.4</span>
+                    <span>rtw88</span>
                 </div>
                 <div class="tag-row">
                     <span class="tag">C</span>
                     <span class="tag">Linux Kernel</span>
                     <span class="tag">mac80211</span>
-                    <span class="tag">rtw88</span>
-                    <span class="tag">RTL8723BS</span>
+                    <span class="tag">RTL8723B(S)</span>
                 </div>
                 <div class="card-actions">
-                    <a href="https://github.com/MocLG/rtw88-rtl8723bs" class="btn">View Source</a>
+                    <a href="https://github.com/torvalds/linux/blob/master/drivers/net/wireless/realtek/rtw88/rtw8723b.c" class="btn">View Mainline Source</a>
+                    <a href="https://github.com/MocLG/rtw88-rtl8723bs" class="btn secondary">Development Archive</a>
                 </div>
             </article>
 
             <article class="card kernel">
-                <div class="card-topline">Kernel Driver Work</div>
-                <h3>rtl8723bs-5.2.17</h3>
+                <div class="card-topline">Active Android Project</div>
+                <h3>horizon-android</h3>
                 <p>
-                    Vendor driver of RTL8723BS version 5.2.17.
+                    Android port of Horizon, a Rust implementation of Minecraft: Java Edition, for arm64 phones and tablets.
                 </p>
                 <div class="card-meta">
-                    <span>C</span>
-                    <span>1 star</span>
-                    <span>master</span>
+                    <span>Rust</span>
+                    <span>9 stars</span>
+                    <span>4 forks</span>
                 </div>
                 <div class="tag-row">
-                    <span class="tag">C</span>
-                    <span class="tag">Linux Driver</span>
-                    <span class="tag">WiFi</span>
-                    <span class="tag">RTL8723BS</span>
-                    <span class="tag">Vendor Driver</span>
+                    <span class="tag">Rust</span>
+                    <span class="tag">Android</span>
+                    <span class="tag">Vulkan</span>
+                    <span class="tag">Minecraft Java</span>
                 </div>
                 <div class="card-actions">
-                    <a href="https://github.com/MocLG/rtl8723bs-5.2.17" class="btn">View Source</a>
+                    <a href="https://github.com/MocLG/horizon-android" class="btn">View Source</a>
+                    <a href="https://playhorizon.dev/" class="btn secondary">Horizon Project</a>
                 </div>
             </article>
 
             <article class="card kernel">
-                <div class="card-topline">Kernel Work</div>
-                <h3>android_kernel_samsung_exynos990_nethunter</h3>
+                <div class="card-topline">Active Android Project</div>
+                <h3>Time-My-Galaxy</h3>
                 <p>
-                    Custom 4.19.x kernel for Samsung Exynos990 series focused on N985F and optimized for Kali NetHunter.
+                    Temporary root utility for Samsung Galaxy devices, with Shizuku-based launch and build-matched support profiles.
                 </p>
                 <div class="card-meta">
                     <span>C</span>
-                    <span>3 stars</span>
-                    <span>GPL-2.0</span>
+                    <span>8 stars</span>
+                    <span>2 forks</span>
                 </div>
                 <div class="tag-row">
                     <span class="tag">C</span>
-                    <span class="tag">Android Kernel</span>
-                    <span class="tag">Exynos990</span>
-                    <span class="tag">NetHunter</span>
+                    <span class="tag">Android</span>
+                    <span class="tag">Shizuku</span>
+                    <span class="tag">Samsung</span>
                 </div>
                 <div class="card-actions">
-                    <a href="https://github.com/MocLG/android_kernel_samsung_exynos990_nethunter" class="btn">View Source</a>
-                    <a href="https://github.com/MocLG/android_kernel_samsung_exynos990_nethunter/releases" class="btn secondary">Releases</a>
+                    <a href="https://github.com/MocLG/Time-My-Galaxy" class="btn">View Source</a>
                 </div>
-            </article>
-            <!-- ACTIVE:END -->
+            </article><!-- ACTIVE:END -->
         </div>
+
+
+
+        <section class="about-section" aria-labelledby="about-heading">
+            <h2 id="about-heading"><span class="status-dot"></span>About Me</h2>
+            <div class="grid">
+                <article class="card kernel">
+                    <div class="card-topline">Linux Kernel Contributor · Systems Developer</div>
+                    <h3>Luka Gejak</h3>
+                    <p>
+                        I work on Linux kernel wireless support, Android software, and practical systems tools. My RTL8723B/RTL8723BS work brought the chipset to the mac80211-based rtw88 driver in mainline Linux 7.4.
+                    </p>
+                    <p>
+                        I enjoy debugging across software and hardware boundaries, then turning those findings into maintainable code. My current projects span Horizon for Android, Samsung Android utilities, and Linux tooling.
+                    </p>
+                    <div class="tag-row">
+                        <span class="tag">Linux Kernel</span>
+                        <span class="tag">Wireless</span>
+                        <span class="tag">Android</span>
+                        <span class="tag">Rust</span>
+                    </div>
+                </article>
+            </div>
+        </section>
 
         <div class="terminal-container">
             <div class="terminal-header">
@@ -613,7 +635,7 @@
             {
                 name: "rtw88-rtl8723bs",
                 url: "https://github.com/MocLG/rtw88-rtl8723bs",
-                description: "A modern mac80211-based port of the RTL8723BS driver for the rtw88 framework, replacing the legacy staging driver.",
+                description: "Historical development tree for RTL8723B/RTL8723BS support, now upstream in mainline Linux 7.4.",
                 language: "C",
                 stars: 10,
                 forks: 1,
@@ -625,7 +647,7 @@
             {
                 name: "android_kernel_samsung_exynos990_nethunter",
                 url: "https://github.com/MocLG/android_kernel_samsung_exynos990_nethunter",
-                description: "Custom 4.19.x kernel for Samsung Exynos990 series focused on N985F and optimized for Kali NetHunter.",
+                description: "Unmaintained custom 4.19.x kernel for Samsung Exynos 990, retained as a completed hardware project.",
                 language: "C",
                 stars: 3,
                 forks: 0,
@@ -637,7 +659,7 @@
             {
                 name: "Time-My-Galaxy",
                 url: "https://github.com/MocLG/Time-My-Galaxy",
-                description: "CVE-2026-98260 timerfd exploit and Shizuku launcher for the Samsung",
+                description: "Temporary root utility for Samsung Galaxy devices, with Shizuku-based launch and build-matched support profiles.",
                 language: "C",
                 stars: 8,
                 forks: 2,
@@ -685,7 +707,7 @@
             {
                 name: "Overlay-Guard",
                 url: "https://github.com/MocLG/Overlay-Guard",
-                description: "Android 13+ utility for software-defined display privacy using sensor fusion and the WindowManager API.",
+                description: "Android privacy utility that detects shoulder-surfing risk and can blank the display using Root or Shizuku.",
                 language: "Kotlin",
                 stars: 9,
                 forks: 0,
@@ -697,7 +719,7 @@
             {
                 name: "Root-My-Galaxy",
                 url: "https://github.com/MocLG/Root-My-Galaxy",
-                description: "KSU installer for supported Samsung Galaxy firmware with CVE-2026-43499",
+                description: "Samsung installer app for explicitly supported device model and kernel combinations.",
                 language: "Kotlin",
                 stars: 8,
                 forks: 0,
@@ -1315,7 +1337,29 @@ ___  ___           _     _____
                 </div>`;
             },
 
-            sudo: () => `<span style="color: #ffbd2e;">[ROOT ACCESS GRANTED]</span><br>KernelSU v0.9.5 detected. NetHunter active.<br>GitHub: https://github.com/MocLG<br>Indexed repos: ${PROJECTS.length}`,
+            sudo: () => {
+                const inputLine = document.querySelector(".terminal-input-line");
+                inputLine.style.display = "none";
+
+                setTimeout(() => {
+                    const moduleLine = document.createElement("div");
+                    moduleLine.style.margin = "5px 0 5px 0";
+                    moduleLine.innerHTML = `<span style="color: #ffbd2e;">KernelSU v3.2.5 late loaded as module</span>`;
+                    historyContainer.appendChild(moduleLine);
+
+                    const accessLine = document.createElement("div");
+                    accessLine.style.color = "#ff5f56";
+                    accessLine.style.margin = "0 0 15px 0";
+                    accessLine.textContent = "ROOT ACCESS GRANTED";
+                    historyContainer.appendChild(accessLine);
+
+                    inputLine.style.display = "flex";
+                    input.focus();
+                    terminalBody.scrollTop = terminalBody.scrollHeight;
+                }, 3000);
+
+                return `<span style="color: #00ff9d;">Running wr_timerfd exploit...</span>`;
+            },
 
             clear: () => {
                 historyContainer.innerHTML = "";
@@ -1331,7 +1375,7 @@ ___  ___           _     _____
                     <span style="color: #00ff9d; font-weight: bold;">BIO:</span> ${escapeHtml(GITHUB_PROFILE.bio)}<br>
                     <span style="color: #00ff9d; font-weight: bold;">SITE:</span> ${escapeHtml(GITHUB_PROFILE.site)}<br>
                     <span style="color: #00ff9d; font-weight: bold;">GITHUB:</span> ${escapeHtml(GITHUB_PROFILE.github)}<br>
-                    <span style="color: #00ff9d; font-weight: bold;">FOCUS:</span> rtw88 RTL8723BS porting, mac80211, Android kernel work<br>
+                    <span style="color: #00ff9d; font-weight: bold;">FOCUS:</span> upstream rtw88 work, Android projects, Linux systems tools<br>
                     <span style="color: #7aa2f7; font-style: italic; display: block; margin-top: 8px;">"Compiling the future, one patch at a time."</span>
                 </div>
             `
@@ -1441,7 +1485,7 @@ ___  ___           _     _____
         }
 
         function startTyping() {
-            const textToType = "Linux Kernel Developer | Wireless Driver Porting | Systems Programming";
+            const textToType = "Linux Kernel Contributor | Upstream rtw88 | Android & Systems Software";
             const typingElement = document.getElementById("typing-text");
             let index = 0;
 
